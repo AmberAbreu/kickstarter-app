@@ -1,0 +1,26 @@
+{
+  "name": "kickstarter-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "jwt-then": "^1.0.1",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.12.2",
+    "sequelize-typescript": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.36",
+    "@types/express": "^4.17.13",
+    "@types/jwt-then": "^1.0.1",
+    "@types/validator": "^13.7.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4"
+  }
+}
