@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+//run the seed use CLI command: npx prisma db seed
+
 async function main() {
   const alice = await prisma.user.upsert({
     where: { email: "amber@amber.com" },
