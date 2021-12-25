@@ -5,22 +5,22 @@ import {
   Column,
   NotEmpty,
   PrimaryKey,
+  Model,
 } from "sequelize-typescript";
-import { Model } from "sequelize/types";
 
-export interface UserI {
+export interface CampaignI {
   id?: number | null;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
+  name: string;
+  description: string;
+  amtNeeded: number;
+  status: boolean;
 }
 
 @Table({
-  tableName: "user",
+  tableName: "campaign",
   timestamps: true,
 })
-export default class User extends Model implements UserI {
+export default class Campaign extends Model implements CampaignI {
   @AutoIncrement
   @PrimaryKey
   @Column
@@ -29,20 +29,20 @@ export default class User extends Model implements UserI {
   @AllowNull(false)
   @NotEmpty
   @Column
-  first_name!: string;
+  name!: string;
 
   @AllowNull(false)
   @NotEmpty
   @Column
-  last_name!: string;
+  description!: string;
 
   @AllowNull(false)
   @NotEmpty
   @Column
-  email!: string;
+  amtNeeded!: number;
 
   @AllowNull(false)
   @NotEmpty
   @Column
-  password!: string;
+  status!: boolean;
 }
