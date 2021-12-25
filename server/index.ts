@@ -23,6 +23,30 @@ app.get(`/users/:id`, async (req, res) => {
   res.json(user);
 });
 
+app.post(`/users`, async (req, res) => {
+  const result = await prisma.user.create({
+    data: { ...req.body },
+  });
+  res.json(result);
+});
+
+app.put("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const post = await prisma.user.update({
+    where: { id: Number(id) },
+    data: { ...req.body },
+  });
+  res.json(post);
+});
+
+app.delete(`/users/:id`, async (req, res) => {
+  const { id } = req.params;
+  const post = await prisma.user.delete({
+    where: { id: Number(id) },
+  });
+  res.json(post);
+});
+
 //CAMPAIGNS
 
 app.get("/campaigns", async (req, res) => {
