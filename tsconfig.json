@@ -1,21 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "noImplicitUseStrict": false,
-    "outDir": "dist/",
-    "baseUrl": "src/server/models/app.ts",
-    "listFiles": false,
-    "noEmitHelpers": false,
-    "noImplicitReturns": true,
+    "sourceMap": true,
+    "outDir": "dist",
     "strict": true,
-    "suppressImplicitAnyIndexErrors": false
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"],
-  "compileOnSave": false
+    "lib": ["esnext"],
+    "esModuleInterop": true
+  }
 }
