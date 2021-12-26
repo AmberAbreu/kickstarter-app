@@ -3,7 +3,10 @@
     "sourceMap": true,
     "outDir": "dist",
     "strict": true,
-    "lib": ["esnext"],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "lib": ["es6", "DOM"],
     "esModuleInterop": true
   }
 }
