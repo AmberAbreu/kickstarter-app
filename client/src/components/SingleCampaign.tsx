@@ -15,7 +15,7 @@ export default function SingleCampaign(
   props: any,
   { detail }: Props
 ): ReactElement {
-  let [campaign, setCampaign] = useState([]);
+  let [campaign, setCampaign] = useState({});
   const campaignID = props.match ? props.match.params.id : props.id;
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function SingleCampaign(
   }, [campaignID]);
   return (
     <div>
-      {campaign.length ? (
+      {!campaign.length ? (
         <div>Nothing here yet.</div>
       ) : (
         <Card>
