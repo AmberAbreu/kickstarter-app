@@ -10,12 +10,12 @@ app.use(express.json());
 //organize file struct
 
 //USERS:
-app.get("/users", async (req, res) => {
+app.get("/api/users", async (req, res) => {
   const users = await prisma.user.findMany();
   res.json(users);
 });
 
-app.get(`/users/:id`, async (req, res) => {
+app.get(`/api/users/:id`, async (req, res) => {
   const { id } = req.params;
   const user = await prisma.user.findUnique({
     where: { id: Number(id) },
@@ -23,14 +23,14 @@ app.get(`/users/:id`, async (req, res) => {
   res.json(user);
 });
 
-app.post(`/users`, async (req, res) => {
+app.post(`/api/users`, async (req, res) => {
   const result = await prisma.user.create({
     data: { ...req.body },
   });
   res.json(result);
 });
 
-app.put("/users/:id", async (req, res) => {
+app.put("/api/users/:id", async (req, res) => {
   const { id } = req.params;
   const post = await prisma.user.update({
     where: { id: Number(id) },
@@ -39,7 +39,7 @@ app.put("/users/:id", async (req, res) => {
   res.json(post);
 });
 
-app.delete(`/users/:id`, async (req, res) => {
+app.delete(`/api/users/:id`, async (req, res) => {
   const { id } = req.params;
   const post = await prisma.user.delete({
     where: { id: Number(id) },
@@ -49,20 +49,20 @@ app.delete(`/users/:id`, async (req, res) => {
 
 //CAMPAIGNS
 
-app.get("/campaigns", async (req, res) => {
-  const users = await prisma.campaign.findMany();
-  res.json(users);
+app.get("/api/campaigns", async (req, res) => {
+  const campaigns = await prisma.campaign.findMany();
+  res.json(campaigns);
 });
 
-app.get(`/campaigns/:id`, async (req, res) => {
+app.get(`/api/campaigns/:id`, async (req, res) => {
   const { id } = req.params;
-  const user = await prisma.campaign.findUnique({
+  const campaign = await prisma.campaign.findUnique({
     where: { id: Number(id) },
   });
-  res.json(user);
+  res.json(campaign);
 });
 
-app.post(`/campaigns`, async (req, res) => {
+app.post(`/api/campaigns`, async (req, res) => {
   const { title, description, authorEmail } = req.body;
   const result = await prisma.campaign.create({
     data: {
@@ -75,7 +75,7 @@ app.post(`/campaigns`, async (req, res) => {
   res.json(result);
 });
 
-app.put("/campaigns/:id", async (req, res) => {
+app.put("/api/campaigns/:id", async (req, res) => {
   const { id } = req.params;
   const post = await prisma.campaign.update({
     where: { id: Number(id) },
@@ -84,7 +84,7 @@ app.put("/campaigns/:id", async (req, res) => {
   res.json(post);
 });
 
-app.delete(`/campaigns/:id`, async (req, res) => {
+app.delete(`/api/campaigns/:id`, async (req, res) => {
   const { id } = req.params;
   const post = await prisma.campaign.delete({
     where: { id: Number(id) },

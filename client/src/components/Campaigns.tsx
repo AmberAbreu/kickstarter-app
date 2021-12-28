@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import SingleCampaign from "./SingleCampaign";
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -10,63 +10,89 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-const campaigns = [
-  {
-    id: 0,
-    title: "Help us get funding",
-    photoUrl:
-      "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
-  },
-  {
-    id: 0,
-    title: "Funding funding",
-    photoUrl:
-      "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
-  },
-];
+import axios from "axios";
 
-interface Props {}
+// const campaigns = [
+//   {
+//     id: 0,
+//     title: "Help us get funding",
+//     photoUrl:
+//       "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
+//   },
+//   {
+//     id: 0,
+//     title: "Funding funding",
+//     photoUrl:
+//       "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
+//   },
+// ];
+export interface CampaignI {
+  id: number;
+  title: string;
+  photoUrl: string;
+  description?: string;
+  received?: string;
+}
 
-export default function Campaigns({}: Props): ReactElement {
-  // const [campaigns, setCampaigns] = useState([]);
+export default function Campaigns(): ReactElement {
+  const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchCampaigns() {
+      try {
+        setLoading(true);
+        const { data } = await axios.get("/api/campaigns/");
+        setCampaigns(data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchCampaigns();
+  }, []);
   return (
     <div>
-      <Grid container>
-        {campaigns
-          .sort((a, b) => a.title.localeCompare(b.title))
-          .map((campaign) => {
-            return (
-              <Grid item key={campaign.id}>
-                <Card>
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      alt="Campaign Image"
-                      height="140"
-                      image={campaign.photoUrl}
-                    />
-                  </CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {campaign.title}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Link to={`/campaigns/${campaign.id}`}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        style={{ color: "#FFFFFF" }}
-                      >
-                        Learn More
-                      </Button>
-                    </Link>
-                  </CardActions>
-                </Card>
-              </Grid>
-            );
-          })}
-      </Grid>
+      {loading ? (
+        <p>nothing yet.</p>
+      ) : (
+        <Grid container>
+          {campaigns
+            // .sort((a, b) => a.title.localeCompare(b.title))
+            .map((campaign: CampaignI) => {
+              return (
+                <Grid item key={campaign.id}>
+                  <Card>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        alt="Campaign Image"
+                        height="140"
+                        image={campaign.photoUrl}
+                      />
+                    </CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {campaign.title}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Link to={`/campaigns/${campaign.id}`}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          style={{ color: "#FFFFFF" }}
+                        >
+                          Learn More
+                        </Button>
+                      </Link>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+        </Grid>
+      )}
     </div>
   );
 }

@@ -2,12 +2,14 @@
   "name": "kickstarter-app",
   "version": "1.0.0",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "schema": "prisma/schema.prisma"
   },
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx ts-node index.ts && cd client && npm start"
   },
   "repository": {
     "type": "git",
@@ -28,12 +30,16 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@mui/material": "^5.2.5",
     "@prisma/client": "^3.7.0",
     "@types/material-ui": "^0.21.12",
     "clsx": "^1.1.1",
     "express": "^4.17.2",
-    "firebase": "^9.6.1"
+    "firebase": "^9.6.1",
+    "react-router-dom": "^6.2.1"
   }
 }

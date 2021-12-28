@@ -14,7 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/campaigns" element={<Campaigns />} />
         <Route path="/campaigns/:id" element={<SingleCampaign />} />
-        <Route path="/test" element={<CreateCampaign />} />
+        <Route path="/create" element={<CreateCampaign />} />
       </Routes>
     </Router>
   );
