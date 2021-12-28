@@ -10,10 +10,25 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+const campaigns = [
+  {
+    id: 0,
+    title: "Help us get funding",
+    photoUrl:
+      "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
+  },
+  {
+    id: 0,
+    title: "Funding funding",
+    photoUrl:
+      "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
+  },
+];
+
 interface Props {}
 
 export default function Campaigns({}: Props): ReactElement {
-  const [campaigns, setCampaigns] = useState([]);
+  // const [campaigns, setCampaigns] = useState([]);
   return (
     <div>
       <Grid container>
@@ -33,7 +48,7 @@ export default function Campaigns({}: Props): ReactElement {
                   </CardActionArea>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {campaign.name}
+                      {campaign.title}
                     </Typography>
                   </CardContent>
                   <CardActions>

@@ -7,6 +7,15 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 
+const campaign = {
+  id: 0,
+  title: "Help us get funding",
+  photoUrl:
+    "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
+  received: 10,
+  description: "We are a startup trying to get funding",
+};
+
 interface Props {
   detail: boolean;
 }
@@ -15,24 +24,24 @@ export default function SingleCampaign(
   props: any,
   { detail }: Props
 ): ReactElement {
-  let [campaign, setCampaign] = useState({});
+  // let [campaign, setCampaign] = useState({});
   const campaignID = props.match ? props.match.params.id : props.id;
 
-  useEffect(() => {
-    async function getCampaign(id: number) {
-      try {
-        const response = await axios.get(`/campaigns/${id}`);
-        const data = response.data;
-        setCampaign(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getCampaign(campaignID);
-  }, [campaignID]);
+  // useEffect(() => {
+  //   async function getCampaign(id: number) {
+  //     try {
+  //       const response = await axios.get(`/campaigns/${id}`);
+  //       const data = response.data;
+  //       setCampaign(data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  //   getCampaign(campaignID);
+  // }, [campaignID]);
   return (
     <div>
-      {!campaign.length ? (
+      {!campaign ? (
         <div>Nothing here yet.</div>
       ) : (
         <Card>
