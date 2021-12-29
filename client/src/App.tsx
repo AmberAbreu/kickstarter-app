@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
 import Campaigns from "./components/Campaigns";
 import SingleCampaign from "./components/SingleCampaign";
-import CreateCampaign from "./components/CreateCampaign";
+import CreateCampaign from "./components/formComponents/CreateCampaign";
 
 function App() {
   return (
