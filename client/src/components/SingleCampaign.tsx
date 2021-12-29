@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import Card from "@material-ui/core/Card";
@@ -27,19 +27,19 @@ export default function SingleCampaign(
   { detail }: Props
 ): ReactElement {
   let [campaign, setCampaign] = useState<CampaignI | null>(null);
-  const campaignID = props.match.params.id;
+  let { id } = useParams();
 
   useEffect(() => {
+    console.log(typeof id);
     async function getCampaign(id: number) {
       try {
-        // const { data } = await axios.get(`/api/campaigns/${id}`);
-        // setCampaign(data);
-        console.log(campaignID);
+        const { data } = await axios.get(`/api/campaigns/${id}`);
+        setCampaign(data);
       } catch (err) {
         console.log(err);
       }
     }
-    // getCampaign(campaignID);
+    getCampaign(Number(id));
   }, []);
   return (
     <div>
