@@ -1,43 +1,48 @@
+//need to figure out onsubmit + firebase configurations
+//confirm password field does not allow any inputs
+
 import React, { FC, ReactElement, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles.css";
-import { Controller, useForm } from "react-hook-form";
-import Container from "@material-ui/core/Container";
-import FormGroup from "@mui/material/FormGroup";
+
+import { Form, useForm } from "./formComponents/useForm";
 
 import { auth } from "../config/firebase";
 import logging from "../config/logging";
 
-import { TextInput } from "../components/formComponents/TextInput";
-
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 interface Props {
   hasAccount?: boolean;
 }
 
+const initialValues = {
+  email: "",
+  password: "",
+  confirm: "",
+};
+
 const Login: FC<Props> = ({ hasAccount }) => {
-  const { handleSubmit, control } = useForm();
+  const { values, setValues, handleInputChange } = useForm(initialValues);
   const onSubmit = (data: any) => {
     signUpWithEmailAndPassword();
     console.log(data);
   };
 
   const [registering, setRegistering] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirm, setConfirm] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
   const signUpWithEmailAndPassword = () => {
-    if (password !== confirm)
+    if (values.password !== values.confirm)
       setError("Please make sure your passwords match.");
     if (error !== "") setError("");
     setRegistering(true);
 
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(values.email, values.password)
       .then((result) => {
         logging.info(result);
         navigate("/login");
@@ -57,25 +62,34 @@ const Login: FC<Props> = ({ hasAccount }) => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <FormGroup>
-        <TextInput name={"email"} control={control} label={"email"} />
-        <TextInput name={"password"} control={control} label={"password"} />
-        <TextInput
-          name={"password confirmation"}
-          control={control}
-          label={"confirm password"}
-        />
-        <Button disabled={registering} onClick={handleSubmit(onSubmit)}>
-          Sign up
-        </Button>
-        <small>
-          <p>
-            Already have an account <Link to="/login">Login</Link>{" "}
-          </p>
-        </small>
-      </FormGroup>
-    </Container>
+    <Form>
+      <Grid container>
+        <Grid item xs={6}>
+          <TextField
+            variant="outlined"
+            name="email"
+            label="email"
+            value={values.name}
+            onChange={handleInputChange}
+          />
+          <TextField
+            variant="outlined"
+            name="password"
+            label="password"
+            value={values.password}
+            onChange={handleInputChange}
+          />
+          <TextField
+            variant="outlined"
+            name="confirm password"
+            label="confirm password"
+            value={values.confirm}
+            onChange={handleInputChange}
+          />
+          <Button disabled={registering}>Sign up</Button>
+        </Grid>
+      </Grid>
+    </Form>
   );
 };
 export default Login;
