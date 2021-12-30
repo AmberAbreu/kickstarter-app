@@ -30,16 +30,6 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     padding: "20px",
   },
-  Bars: {
-    display: "block",
-    color: "white",
-    position: "absolute",
-    top: 0,
-    right: 0,
-    transform: "translate(-100%, 75%)",
-    fontSize: "1.8rem",
-    cursor: "pointer",
-  },
 }));
 
 export default function NavBar({}: Props): ReactElement {

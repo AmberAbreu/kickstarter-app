@@ -2,10 +2,15 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+import { Grid } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import { CampaignI } from "./Campaigns";
 
@@ -18,19 +23,19 @@ import { CampaignI } from "./Campaigns";
 //   description: "We are a startup trying to get funding",
 // };
 
-interface Props {
-  detail: boolean;
-}
-
-export default function SingleCampaign(
-  props: any,
-  { detail }: Props
-): ReactElement {
+export default function SingleCampaign({
+  id,
+  title,
+  description,
+  photoUrl,
+  status,
+  raised,
+}: CampaignI): ReactElement {
   let [campaign, setCampaign] = useState<CampaignI | null>(null);
-  let { id } = useParams();
+  let { id: paramsId } = useParams();
 
   useEffect(() => {
-    console.log(typeof id);
+    console.log(paramsId);
     async function getCampaign(id: number) {
       try {
         const { data } = await axios.get(`/api/campaigns/${id}`);
@@ -39,34 +44,43 @@ export default function SingleCampaign(
         console.log(err);
       }
     }
-    getCampaign(Number(id));
+    {
+      id ? getCampaign(id) : getCampaign(Number(paramsId));
+    }
   }, []);
   return (
     <div>
       {!campaign ? (
         <div>Nothing here yet.</div>
       ) : (
-        <Card>
-          <CardContent>
-            <Typography>{campaign!.title}</Typography>
-          </CardContent>
-          <CardMedia image={campaign!.photoUrl} title={campaign!.title} />
-
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {campaign!.title}
-            </Typography>
-            <Typography gutterBottom variant="h5" component="h2">
-              {campaign!.description}
-            </Typography>
-
-            <div>
+        <Grid item key={campaign.id}>
+          <Card>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                alt="Campaign Image"
+                height="140"
+                image={campaign.photoUrl}
+              />
+            </CardActionArea>
+            <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                AMOUNT RAISED: ${campaign!.received}
+                {campaign.title}
               </Typography>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+            <CardActions>
+              <Link to={`/campaigns/${campaign.id}`}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  Learn More
+                </Button>
+              </Link>
+            </CardActions>
+          </Card>
+        </Grid>
       )}
     </div>
   );

@@ -27,11 +27,12 @@ import axios from "axios";
 //   },
 // ];
 export interface CampaignI {
-  id: number;
-  title: string;
-  photoUrl: string;
+  id?: any;
+  title?: string;
   description?: string;
-  received?: string;
+  photoUrl?: string;
+  status?: boolean;
+  raised?: number;
 }
 
 export default function Campaigns(): ReactElement {
@@ -60,36 +61,7 @@ export default function Campaigns(): ReactElement {
           {campaigns
             // .sort((a, b) => a.title.localeCompare(b.title))
             .map((campaign: CampaignI) => {
-              return (
-                <Grid item key={campaign.id}>
-                  <Card>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        alt="Campaign Image"
-                        height="140"
-                        image={campaign.photoUrl}
-                      />
-                    </CardActionArea>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {campaign.title}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Link to={`/campaigns/${campaign.id}`}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          style={{ color: "#FFFFFF" }}
-                        >
-                          Learn More
-                        </Button>
-                      </Link>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
+              return <SingleCampaign id={campaign.id} />;
             })}
         </Grid>
       )}
