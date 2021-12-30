@@ -10,6 +10,7 @@ async function main() {
     create: {
       email: "amber@amber.com",
       name: "Amber",
+      password: "123",
       campaigns: {
         create: {
           title: "Blink",
@@ -27,6 +28,7 @@ async function main() {
     create: {
       email: "bob@bob.com",
       name: "Bob",
+      password: "123",
       campaigns: {
         create: [
           {
