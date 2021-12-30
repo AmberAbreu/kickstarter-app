@@ -6,6 +6,9 @@ import Typography from "@material-ui/core/Typography";
 
 interface Props {}
 
+//single component in this side will query  users and render the single compnents
+// attached to the users
+
 // const campaign = {
 //   id: 0,
 //   title: "Help us get funding",

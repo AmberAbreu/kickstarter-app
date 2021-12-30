@@ -12,28 +12,41 @@ interface Props {}
 const initialValues = {
   email: "",
   password: "",
+  confirmPassword: "",
 };
 
-export default function Login({}: Props): ReactElement {
-  const [authenticating, setAuthenticating] = useState(false);
+export default function Register({}: Props): ReactElement {
+  const [registering, setRegistering] = useState(false);
   const [error, setError] = useState("");
   const { values, setValues, handleInputChange } = useForm(initialValues);
 
   let navigate = useNavigate();
 
-  const signInWithEmailAndPassword = () => {
+  const signUpWithEmailAndPassword = () => {
+    if (values.password !== values.confirmPassword) {
+      setError("Please make sure your passwords match.");
+      return;
+    }
     if (error !== "") setError("");
-    setAuthenticating(true);
+    setRegistering(true);
+
     auth
-      .signInWithEmailAndPassword(values.email, values.password)
+      .createUserWithEmailAndPassword(values.email, values.password)
       .then((result) => {
         logging.info(result);
         navigate("/login");
       })
       .catch((error) => {
+        //can use console.log, but tutorial I was using used a logging library
         logging.error(error);
-        setAuthenticating(false);
-        setError("Unable to sign in. Try again later");
+        if (error.code.includes("auth/weak-password")) {
+          setError("Please enter a stronger password.");
+        } else if (error.code.includes("auth.email-already-in-use")) {
+          setError("Email already in use");
+        } else {
+          setError("Unable to register. Please try again later.");
+        }
+        setRegistering(false);
       });
   };
 
@@ -54,16 +67,25 @@ export default function Login({}: Props): ReactElement {
           value={values.password}
           onChange={handleInputChange}
         />
+        <TextField
+          error={error.length ? true : false}
+          id="standard-error-helper-text"
+          variant="outlined"
+          label="confirmPassword"
+          name="confirmPassword"
+          value={values.confirmPassword}
+          onChange={handleInputChange}
+          helperText={error}
+        />
       </Form>
       <Button
-        disabled={authenticating}
         type="submit"
         variant="contained"
         color="primary"
         size="large"
-        onClick={() => signInWithEmailAndPassword()}
+        onClick={() => signUpWithEmailAndPassword()}
       >
-        Login
+        Sign up
       </Button>
       <small>
         <p>

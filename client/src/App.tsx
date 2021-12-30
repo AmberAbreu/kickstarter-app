@@ -8,6 +8,7 @@ import Campaigns from "./components/Campaigns";
 import SingleCampaign from "./components/SingleCampaign";
 import CreateCampaign from "./components/formComponents/CreateCampaign";
 import Profile from "./components/Profile";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/campaigns/:id" element={<SingleCampaign />} />
           <Route path="/create" element={<CreateCampaign />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/signup" element={<Register />} />
         </Routes>
       </Layout>
     </Router>

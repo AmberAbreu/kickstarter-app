@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   className?: string;
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
 }
 export function Form({ className, children }: Props): ReactElement {
   const classes = useStyles();

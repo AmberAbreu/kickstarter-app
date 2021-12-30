@@ -12,20 +12,6 @@ import Button from "@material-ui/core/Button";
 
 import axios from "axios";
 
-// const campaigns = [
-//   {
-//     id: 0,
-//     title: "Help us get funding",
-//     photoUrl:
-//       "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
-//   },
-//   {
-//     id: 0,
-//     title: "Funding funding",
-//     photoUrl:
-//       "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
-//   },
-// ];
 export interface CampaignI {
   id?: any;
   title?: string;
