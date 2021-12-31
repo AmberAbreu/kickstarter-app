@@ -1,8 +1,9 @@
 import React, { ReactElement, useState } from "react";
 import Button from "@material-ui/core/Button";
 
+import { stripePaymentMethodHandler } from "../script";
+
 import {
-  Elements,
   useStripe,
   useElements,
   CardNumberElement,
@@ -44,103 +45,124 @@ export default function DonateButton({
   const [email, setEmail] = useState("");
 
   const stripe = useStripe();
-  const stripePromise = loadStripe(
-    "pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB"
-  );
-
   const elements = useElements();
 
   const handleSubmit = async (event: any) => {
-    //React.FormEvent<HTMLInputElement>
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
+
+    setLoading(true);
+    setErrorMsg("");
+
+    const paymentMethodObj = {
+      type: "card",
+      card: elements.getElement(CardNumberElement),
+      billing_details: {
+        name,
+        email,
+      },
+    };
+    const paymentMethodResult = await stripe.createPaymentMethod(
+      paymentMethodObj
+    );
+
+    stripePaymentMethodHandler(
+      {
+        result: paymentMethodResult,
+        amount: amount,
+      },
+      handleResponse
+    );
+  };
+
+  const handleResponse = (response: any) => {
+    setLoading(false);
+    if (response.error) {
+      setErrorMsg(
+        typeof response.error === "string"
+          ? response.error
+          : response.error.message
+      );
+      return;
+    }
+    setPaymentCompleted(response.success ? true : false);
   };
 
   return (
-    <Elements stripe={stripePromise}>
-      <React.Fragment>
-        <h4 className="d-flex justify-content-between align-items-center mb-3">
-          <span className="text-muted">Pay with card</span>
-        </h4>
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-md-6 mb-3">
-              <label htmlFor="cc-name">Name on card</label>
-              <input
-                id="cc-name"
-                type="text"
-                className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <label htmlFor="cc-email">Email</label>
-              <input
-                id="cc-email"
-                type="text"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+    <React.Fragment>
+      <h4 className="d-flex justify-content-between align-items-center mb-3">
+        <span className="text-muted">Pay with card</span>
+      </h4>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-6 mb-3">
+            <label htmlFor="cc-name">Name on card</label>
+            <input
+              id="cc-name"
+              type="text"
+              className="form-control"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
-
-          <div className="row">
-            <div className="col-md-12 mb-3">
-              <label htmlFor="cc-number">Card Number</label>
-              <CardNumberElement
-                id="cc-number"
-                className="form-control"
-                options={CARD_ELEMENT_OPTIONS}
-              />
-            </div>
+          <div className="col-md-6 mb-3">
+            <label htmlFor="cc-email">Email</label>
+            <input
+              id="cc-email"
+              type="text"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
+        </div>
 
-          <div className="row">
-            <div className="col-md-6 mb-3">
-              <label htmlFor="expiry">Expiration Date</label>
-              <CardExpiryElement
-                id="expiry"
-                className="form-control"
-                options={CARD_ELEMENT_OPTIONS}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <label htmlFor="cvc">CVC</label>
-              <CardCvcElement
-                id="cvc"
-                className="form-control"
-                options={CARD_ELEMENT_OPTIONS}
-              />
-            </div>
+        <div className="row">
+          <div className="col-md-12 mb-3">
+            <label htmlFor="cc-number">Card Number</label>
+            <CardNumberElement
+              id="cc-number"
+              className="form-control"
+              options={CARD_ELEMENT_OPTIONS}
+            />
           </div>
+        </div>
 
-          <hr className="mb-4" />
-          <button
-            className="btn btn-dark w-100"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? (
-              <div
-                className="spinner-border spinner-border-sm text-light"
-                role="status"
-              ></div>
-            ) : (
-              `PAY ₹${amount}`
-            )}
-          </button>
-          {errorMsg && <div className="text-danger mt-2">{errorMsg}</div>}
-        </form>
-      </React.Fragment>
-    </Elements>
+        <div className="row">
+          <div className="col-md-6 mb-3">
+            <label htmlFor="expiry">Expiration Date</label>
+            <CardExpiryElement
+              id="expiry"
+              className="form-control"
+              options={CARD_ELEMENT_OPTIONS}
+            />
+          </div>
+          <div className="col-md-6 mb-3">
+            <label htmlFor="cvc">CVC</label>
+            <CardCvcElement
+              id="cvc"
+              className="form-control"
+              options={CARD_ELEMENT_OPTIONS}
+            />
+          </div>
+        </div>
+
+        <hr className="mb-4" />
+        <button className="btn btn-dark w-100" type="submit" disabled={loading}>
+          {loading ? (
+            <div
+              className="spinner-border spinner-border-sm text-light"
+              role="status"
+            ></div>
+          ) : (
+            `PAY ₹${amount}`
+          )}
+        </button>
+        {errorMsg && <div className="text-danger mt-2">{errorMsg}</div>}
+      </form>
+    </React.Fragment>
   );
 }

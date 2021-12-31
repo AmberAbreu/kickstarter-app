@@ -92,12 +92,22 @@ export default function SingleCampaign({
               </Link>
             </CardActions>
           </Card>
-          <Elements stripe={stripePromise}>
-            <DonateButton
-              amount={2000}
-              setPaymentCompleted={setPaymentCompleted}
-            />
-          </Elements>
+          <div className="row s-box">
+            {paymentCompleted ? (
+              successMessage()
+            ) : (
+              <React.Fragment>
+                <div className="col-md-7 order-md-1">
+                  <Elements stripe={stripePromise}>
+                    <DonateButton
+                      amount={2000}
+                      setPaymentCompleted={setPaymentCompleted}
+                    />
+                  </Elements>
+                </div>
+              </React.Fragment>
+            )}
+          </div>
         </Grid>
       )}
     </div>
