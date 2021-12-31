@@ -28,6 +28,7 @@ export default function Login({}: Props): ReactElement {
       .signInWithEmailAndPassword(values.email, values.password)
       .then((result) => {
         logging.info(result);
+        console.log("result from login", result);
         navigate("/login");
       })
       .catch((error) => {

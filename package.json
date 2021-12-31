@@ -36,6 +36,7 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.2.5",
     "@prisma/client": "^3.7.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/material-ui": "^0.21.12",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.1.1",
@@ -45,6 +46,7 @@
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.1",
+    "stripe": "^8.195.0"
   }
 }

@@ -9,6 +9,7 @@ import SingleCampaign from "./components/SingleCampaign";
 import CreateCampaign from "./components/formComponents/CreateCampaign";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
+import DonateButton from "./components/DonateButton";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/create" element={<CreateCampaign />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<Register />} />
+          <Route path="/donate" element={<DonateButton />} />
         </Routes>
       </Layout>
     </Router>

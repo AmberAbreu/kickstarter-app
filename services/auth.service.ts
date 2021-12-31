@@ -9,7 +9,7 @@ class AuthService {
   static async register(data) {
     const { email } = data;
     data.password = bcrypt.hashSync(data.password, 8);
-    let user = prisma.user.create({
+    let user = await prisma.user.create({
       data,
     });
     data.accessToken = await jwt.signAccessToken(user);
@@ -26,7 +26,7 @@ class AuthService {
     if (!user) {
       throw createError.NotFound("User not registered");
     }
-    const checkPassword = bcrypt.compareSync(password, user.password);
+    const checkPassword = await bcrypt.compareSync(password, user.password);
     if (!checkPassword)
       throw createError.Unauthorized("Email address or password not valid");
     delete user.password;

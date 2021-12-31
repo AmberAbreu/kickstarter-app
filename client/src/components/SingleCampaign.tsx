@@ -12,7 +12,11 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 import { CampaignI } from "./Campaigns";
+import DonateButton from "./DonateButton";
 
 // const campaign = {
 //   id: 0,
@@ -22,7 +26,13 @@ import { CampaignI } from "./Campaigns";
 //   received: 10,
 //   description: "We are a startup trying to get funding",
 // };
+const stripePromise = loadStripe(
+  "pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB"
+);
 
+const successMessage = () => {
+  return <div className="success-msg">... ...</div>;
+};
 export default function SingleCampaign({
   id,
   title,
@@ -33,6 +43,8 @@ export default function SingleCampaign({
 }: CampaignI): ReactElement {
   let [campaign, setCampaign] = useState<CampaignI | null>(null);
   let { id: paramsId } = useParams();
+
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
 
   useEffect(() => {
     console.log(paramsId);
@@ -80,6 +92,12 @@ export default function SingleCampaign({
               </Link>
             </CardActions>
           </Card>
+          <Elements stripe={stripePromise}>
+            <DonateButton
+              amount={2000}
+              setPaymentCompleted={setPaymentCompleted}
+            />
+          </Elements>
         </Grid>
       )}
     </div>

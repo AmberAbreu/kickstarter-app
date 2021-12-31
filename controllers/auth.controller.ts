@@ -1,5 +1,6 @@
 const auth = require("../services/auth.service");
 import createError from "http-errors";
+
 class authController {
   static register = async (req, res, next) => {
     try {
