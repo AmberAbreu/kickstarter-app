@@ -151,7 +151,7 @@ export default function DonateButton({
         </div>
 
         <hr className="mb-4" />
-        <button className="btn btn-dark w-100" type="submit" disabled={loading}>
+        <Button variant="contained" type="submit" disabled={loading}>
           {loading ? (
             <div
               className="spinner-border spinner-border-sm text-light"
@@ -160,7 +160,7 @@ export default function DonateButton({
           ) : (
             `PAY ₹${amount}`
           )}
-        </button>
+        </Button>
         {errorMsg && <div className="text-danger mt-2">{errorMsg}</div>}
       </form>
     </React.Fragment>

@@ -5,10 +5,13 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const multer = require("multer");
 
+const cors = require("cors");
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -30,7 +33,7 @@ app.post("/pay", async (request, response) => {
     });
     // Send the response to the client
     response.send(generateResponse(intent));
-  } catch (e) {
+  } catch (e: any) {
     // Display error on client
     return response.send({ error: e.message });
   }

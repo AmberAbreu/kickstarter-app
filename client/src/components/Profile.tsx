@@ -1,27 +1,55 @@
-import React, { ReactElement } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
+import { auth } from "../config/firebase";
 import SingleCampaign from "./SingleCampaign";
+import { CampaignI } from "./Campaigns";
 
+import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-interface Props {}
+import axios from "axios";
 
-//single component in this side will query  users and render the single compnents
-// attached to the users
+interface Props {
+  token: string;
+}
 
-// const campaign = {
-//   id: 0,
-//   title: "Help us get funding",
-//   photoUrl:
-//     "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
-//   received: 10,
-//   description: "We are a startup trying to get funding",
-// };
+export default function Profile({ token }: Props): ReactElement {
+  const [loading, setLoading] = useState(false);
+  const [campaigns, setCampaigns] = useState([]);
 
-export default function Profile({}: Props): ReactElement {
+  const id = 1;
+
+  useEffect(() => {
+    async function fetchCampaigns(token: string) {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`/api/users/${id}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+        setCampaigns(data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchCampaigns(token);
+  }, [token]);
+
   return (
     <div>
       <Typography>Active Campaigns:</Typography>
+      {loading ? (
+        <p>nothing yet.</p>
+      ) : (
+        <></>
+        // <Grid container>
+        //   {campaigns
+        //     .map((campaign: CampaignI) => {
+        //       return <SingleCampaign id={campaign.id} />;
+        //     })}
+        // </Grid>
+      )}
     </div>
   );
 }

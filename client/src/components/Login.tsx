@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import { useForm, Form } from "./formComponents/useForm";
 
 import { useNavigate, Link } from "react-router-dom";
@@ -15,6 +15,10 @@ const initialValues = {
 };
 
 export default function Login({}: Props): ReactElement {
+  const [authenticated, setAuthenticated] = useState(
+    false || window.localStorage.getItem("auth") === "true"
+  );
+  const [token, setToken] = useState("");
   const [authenticating, setAuthenticating] = useState(false);
   const [error, setError] = useState("");
   const { values, setValues, handleInputChange } = useForm(initialValues);
@@ -26,10 +30,14 @@ export default function Login({}: Props): ReactElement {
     setAuthenticating(true);
     auth
       .signInWithEmailAndPassword(values.email, values.password)
-      .then((result) => {
-        logging.info(result);
-        console.log("result from login", result);
-        navigate("/login");
+      .then((userCred) => {
+        // logging.info(result);
+        console.log("result from login", userCred);
+        if (userCred) {
+          setAuthenticated(true);
+          window.localStorage.setItem("auth", "true");
+        }
+        navigate("/");
       })
       .catch((error) => {
         logging.error(error);
@@ -37,6 +45,18 @@ export default function Login({}: Props): ReactElement {
         setError("Unable to sign in. Try again later");
       });
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged((userCred) => {
+      if (userCred) {
+        setAuthenticated(true);
+        window.localStorage.setItem("auth", "true");
+        userCred.getIdToken().then((token) => {
+          setToken(token);
+        });
+      }
+    });
+  }, []);
 
   return (
     <div>

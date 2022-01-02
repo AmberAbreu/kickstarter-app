@@ -8,27 +8,26 @@ const router = express.Router();
 
 router.use("/auth", auth);
 
-router.get("/api/users", async (req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
-
-router.get(`/api/users/:id`, async (req, res) => {
+router.get(`/users/:id`, async (req, res) => {
+  console.log(req.headers);
   const { id } = req.params;
   const user = await prisma.user.findUnique({
     where: { id: Number(id) },
+    include: {
+      campaigns: true,
+    },
   });
   res.json(user);
 });
 
-router.post(`/api/users`, async (req, res) => {
-  const result = await prisma.user.create({
-    data: { ...req.body },
-  });
-  res.json(result);
-});
+// router.post(`/users`, async (req, res) => {
+//   const result = await prisma.user.create({
+//     data: { ...req.body },
+//   });
+//   res.json(result);
+// });
 
-router.put("/api/users/:id", async (req, res) => {
+router.put("/users/:id", async (req, res) => {
   const { id } = req.params;
   const post = await prisma.user.update({
     where: { id: Number(id) },
@@ -37,22 +36,14 @@ router.put("/api/users/:id", async (req, res) => {
   res.json(post);
 });
 
-router.delete(`/api/users/:id`, async (req, res) => {
-  const { id } = req.params;
-  const post = await prisma.user.delete({
-    where: { id: Number(id) },
-  });
-  res.json(post);
-});
-
 //CAMPAIGNS
 
-router.get("/api/campaigns", async (req, res) => {
+router.get("/campaigns", async (req, res) => {
   const campaigns = await prisma.campaign.findMany();
   res.json(campaigns);
 });
 
-router.get(`/api/campaigns/:id`, async (req, res) => {
+router.get(`/campaigns/:id`, async (req, res) => {
   const { id } = req.params;
   const campaign = await prisma.campaign.findUnique({
     where: { id: Number(id) },
@@ -60,7 +51,7 @@ router.get(`/api/campaigns/:id`, async (req, res) => {
   res.json(campaign);
 });
 
-router.post(`/api/campaigns`, async (req, res) => {
+router.post(`/campaigns`, async (req, res) => {
   const { title, description, authorEmail } = req.body;
   const result = await prisma.campaign.create({
     data: {
@@ -73,7 +64,7 @@ router.post(`/api/campaigns`, async (req, res) => {
   res.json(result);
 });
 
-router.put("/api/campaigns/:id", async (req, res) => {
+router.put("/campaigns/:id", async (req, res) => {
   const { id } = req.params;
   const post = await prisma.campaign.update({
     where: { id: Number(id) },
@@ -82,7 +73,7 @@ router.put("/api/campaigns/:id", async (req, res) => {
   res.json(post);
 });
 
-router.delete(`/api/campaigns/:id`, async (req, res) => {
+router.delete(`/campaigns/:id`, async (req, res) => {
   const { id } = req.params;
   const post = await prisma.campaign.delete({
     where: { id: Number(id) },
@@ -90,8 +81,8 @@ router.delete(`/api/campaigns/:id`, async (req, res) => {
   res.json(post);
 });
 
-router.use(async (req, res, next) => {
-  next(createError.NotFound("Route not Found"));
-});
+// router.use(async (req, res, next) => {
+//   next(createError.NotFound("Route not Found"));
+// });
 
 module.exports = router;

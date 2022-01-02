@@ -10,17 +10,18 @@ import CreateCampaign from "./components/formComponents/CreateCampaign";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import DonateButton from "./components/DonateButton";
+import Home from "./components/Home";
 
 function App() {
   return (
     <Router>
       <Layout>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaigns/:id" element={<SingleCampaign />} />
           <Route path="/create" element={<CreateCampaign />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/donate" element={<DonateButton />} />
         </Routes>
