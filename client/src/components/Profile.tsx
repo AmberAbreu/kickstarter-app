@@ -34,7 +34,7 @@ export default function Profile({ token }: Props): ReactElement {
       }
     }
     fetchCampaigns(token);
-  }, [token]);
+  }, []);
 
   return (
     <div>

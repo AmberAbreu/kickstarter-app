@@ -7,7 +7,6 @@ import Login from "./components/Login";
 import Campaigns from "./components/Campaigns";
 import SingleCampaign from "./components/SingleCampaign";
 import CreateCampaign from "./components/formComponents/CreateCampaign";
-import Profile from "./components/Profile";
 import Register from "./components/Register";
 import DonateButton from "./components/DonateButton";
 import Home from "./components/Home";

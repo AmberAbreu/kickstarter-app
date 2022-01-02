@@ -88,6 +88,7 @@ export default function Home({}: Props): ReactElement {
       if (userCred) {
         window.localStorage.setItem("auth", "true");
         userCred.getIdToken().then((token) => {
+          console.log("token from home", token);
           setToken(token);
         });
       }
@@ -179,7 +180,7 @@ export default function Home({}: Props): ReactElement {
           </Grid>
         </div>
 
-        <div>{token ? <Profile token={token} /> : <></>}</div>
+        <div>{token.length ? <Profile token={token} /> : <></>}</div>
 
         <div>
           <Grid container spacing={3}>

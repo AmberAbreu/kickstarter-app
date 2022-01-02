@@ -13,18 +13,19 @@ router.use("/auth", auth);
 router.get(`/users/:id`, async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
-    const decodeValue = admin.auth().verifyIdToken(token);
-    if (decodeValue) {
-      next();
+    const decodeValue = await admin.auth().verifyIdToken(token);
+    if (!decodeValue) {
+      res.json({ message: "Unauthorized" });
     }
-    const { id } = req.params;
-    const user = await prisma.user.findUnique({
-      where: { id: Number(id) },
+    console.log(decodeValue);
+    const userEmail = decodeValue.email;
+    const userCampaigns = await prisma.user.findUnique({
+      where: { email: userEmail },
       include: {
         campaigns: true,
       },
     });
-    res.json(user);
+    res.json(userCampaigns);
   } catch (error) {
     next(error);
   }
@@ -52,12 +53,16 @@ router.put("/users/:id", async (req, res, next) => {
 
 //CAMPAIGNS
 
-router.get("/campaigns", async (req, res) => {
-  const campaigns = await prisma.campaign.findMany();
-  res.json(campaigns);
+router.get("/campaigns", async (req, res, next) => {
+  try {
+    const campaigns = await prisma.campaign.findMany();
+    res.json(campaigns);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.get(`/campaigns/:id`, async (req, res) => {
+router.get(`/campaigns/:id`, async (req, res, next) => {
   try {
     const { id } = req.params;
     const campaign = await prisma.campaign.findUnique({
