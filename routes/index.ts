@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
-import { nextTick } from "process";
 
 const auth = require("./auth");
 const admin = require("../config/firebase-config");
+const { checkIfAuthenticated } = require("../middlewares/auth");
 const createError = require("http-errors");
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -31,12 +31,22 @@ router.get(`/users/:id`, async (req, res, next) => {
   }
 });
 
-// router.post(`/users`, async (req, res) => {
-//   const result = await prisma.user.create({
-//     data: { ...req.body },
-//   });
-//   res.json(result);
-// });
+router.post(`/users`, async (req, res, next) => {
+  try {
+    const { email, password, name } = req.body;
+    const user = await admin.auth().createUser({
+      email,
+      password,
+      name,
+    });
+    const result = await prisma.user.create({
+      data: { ...req.body },
+    });
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.put("/users/:id", async (req, res, next) => {
   try {

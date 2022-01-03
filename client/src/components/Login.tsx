@@ -3,9 +3,9 @@ import { useForm, Form } from "./formComponents/useForm";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { auth } from "../config/firebase";
-import logging from "../config/logging";
 import { TextField, Button } from "@material-ui/core";
+
+import axios from "axios";
 
 interface Props {}
 
@@ -25,38 +25,11 @@ export default function Login({}: Props): ReactElement {
 
   let navigate = useNavigate();
 
-  const signInWithEmailAndPassword = () => {
-    if (error !== "") setError("");
-    setAuthenticating(true);
-    auth
-      .signInWithEmailAndPassword(values.email, values.password)
-      .then((userCred) => {
-        // logging.info(result);
-        console.log("result from login", userCred);
-        if (userCred) {
-          setAuthenticated(true);
-          window.localStorage.setItem("auth", "true");
-        }
-        navigate("/");
-      })
-      .catch((error) => {
-        logging.error(error);
-        setAuthenticating(false);
-        setError("Unable to sign in. Try again later");
-      });
+  const handleLogin = async () => {
+    let { data } = await axios.post("/api/auth/login", values);
+    window.localStorage.setItem("token", JSON.stringify(data.data));
+    navigate("/");
   };
-
-  useEffect(() => {
-    auth.onAuthStateChanged((userCred) => {
-      if (userCred) {
-        setAuthenticated(true);
-        window.localStorage.setItem("auth", "true");
-        userCred.getIdToken().then((token) => {
-          setToken(token);
-        });
-      }
-    });
-  }, []);
 
   return (
     <div>
@@ -82,7 +55,7 @@ export default function Login({}: Props): ReactElement {
         variant="contained"
         color="primary"
         size="large"
-        onClick={() => signInWithEmailAndPassword()}
+        onClick={handleLogin}
       >
         Login
       </Button>

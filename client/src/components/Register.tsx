@@ -1,6 +1,8 @@
 import React, { ReactElement, useState } from "react";
 import { useForm, Form } from "./formComponents/useForm";
 
+import axios from "axios";
+
 import { useNavigate, Link } from "react-router-dom";
 
 import { auth } from "../config/firebase";
@@ -10,49 +12,43 @@ import { TextField, Button } from "@material-ui/core";
 interface Props {}
 
 const initialValues = {
+  name: "",
   email: "",
   password: "",
   confirmPassword: "",
 };
 
 export default function Register({}: Props): ReactElement {
-  const [registering, setRegistering] = useState(false);
   const [error, setError] = useState("");
   const { values, setValues, handleInputChange } = useForm(initialValues);
-
+  const [accessToken, setAccessToken] = useState("");
   let navigate = useNavigate();
 
-  const signUpWithEmailAndPassword = () => {
+  const handleSignUp = async () => {
     if (values.password !== values.confirmPassword) {
-      setError("Please make sure your passwords match.");
-      return;
+      console.error("passwords do not match");
     }
-    if (error !== "") setError("");
-    setRegistering(true);
-
-    auth
-      .createUserWithEmailAndPassword(values.email, values.password)
-      .then((result) => {
-        logging.info(result);
-        navigate("/login");
-      })
-      .catch((error) => {
-        //can use console.log, but tutorial I was using used a logging library
-        logging.error(error);
-        if (error.code.includes("auth/weak-password")) {
-          setError("Please enter a stronger password.");
-        } else if (error.code.includes("auth.email-already-in-use")) {
-          setError("Email already in use");
-        } else {
-          setError("Unable to register. Please try again later.");
-        }
-        setRegistering(false);
-      });
+    let { data } = await axios.post("/api/auth/", {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    });
+    // console.log("this is data,", data);
+    // console.log("access token?", data.data.accessToken);
+    window.localStorage.setItem("token", JSON.stringify(data.data));
+    navigate("/");
   };
 
   return (
     <div>
       <Form>
+        <TextField
+          variant="outlined"
+          label="name"
+          name="name"
+          value={values.name}
+          onChange={handleInputChange}
+        />
         <TextField
           variant="outlined"
           label="email"
@@ -83,7 +79,7 @@ export default function Register({}: Props): ReactElement {
         variant="contained"
         color="primary"
         size="large"
-        onClick={() => signUpWithEmailAndPassword()}
+        onClick={handleSignUp}
       >
         Sign up
       </Button>

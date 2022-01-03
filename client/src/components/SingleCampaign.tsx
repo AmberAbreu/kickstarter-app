@@ -56,9 +56,7 @@ export default function SingleCampaign({
         console.log(err);
       }
     }
-    {
-      id ? getCampaign(id) : getCampaign(Number(paramsId));
-    }
+    id ? getCampaign(id) : getCampaign(Number(paramsId));
   }, []);
   return (
     <div>
@@ -80,34 +78,43 @@ export default function SingleCampaign({
                 {campaign.title}
               </Typography>
             </CardContent>
+
             <CardActions>
-              <Link to={`/campaigns/${campaign.id}`}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ color: "#FFFFFF" }}
-                >
-                  Learn More
-                </Button>
-              </Link>
+              {/* Logic: if there is a params id, display the details, if not display learn more */}
+              {!paramsId ? (
+                <>
+                  <Link to={`/campaigns/${campaign.id}`}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{ color: "#FFFFFF" }}
+                    >
+                      Learn More
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <div className="row s-box">
+                    {paymentCompleted ? (
+                      successMessage()
+                    ) : (
+                      <React.Fragment>
+                        <div className="col-md-7 order-md-1">
+                          <Elements stripe={stripePromise}>
+                            <DonateButton
+                              amount={2000}
+                              setPaymentCompleted={setPaymentCompleted}
+                            />
+                          </Elements>
+                        </div>
+                      </React.Fragment>
+                    )}
+                  </div>
+                </>
+              )}
             </CardActions>
           </Card>
-          <div className="row s-box">
-            {paymentCompleted ? (
-              successMessage()
-            ) : (
-              <React.Fragment>
-                <div className="col-md-7 order-md-1">
-                  <Elements stripe={stripePromise}>
-                    <DonateButton
-                      amount={2000}
-                      setPaymentCompleted={setPaymentCompleted}
-                    />
-                  </Elements>
-                </div>
-              </React.Fragment>
-            )}
-          </div>
         </Grid>
       )}
     </div>

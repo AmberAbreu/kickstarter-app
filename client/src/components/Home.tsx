@@ -201,6 +201,7 @@ export default function Home({}: Props): ReactElement {
             {recentCampaigns.map((campaign) => {
               return (
                 <RecentCards
+                  key={campaign.id}
                   id={campaign.id}
                   description={campaign.description}
                   title={campaign.title}

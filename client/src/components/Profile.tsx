@@ -16,13 +16,11 @@ export default function Profile({ token }: Props): ReactElement {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
 
-  const id = 1;
-
   useEffect(() => {
     async function fetchCampaigns(token: string) {
       try {
         setLoading(true);
-        const { data } = await axios.get(`/api/users/${id}`, {
+        const { data } = await axios.get(`/api/users/`, {
           headers: {
             Authorization: "Bearer " + token,
           },

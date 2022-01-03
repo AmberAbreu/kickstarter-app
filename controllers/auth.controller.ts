@@ -1,5 +1,6 @@
 const auth = require("../services/auth.service");
 import createError from "http-errors";
+const admin = require("../config/firebase-config");
 
 class authController {
   static register = async (req, res, next) => {
@@ -39,4 +40,5 @@ class authController {
     }
   };
 }
+
 module.exports = authController;

@@ -13,7 +13,6 @@ export function useForm(initialValues: any) {
       [name]: value,
     });
   };
-  console.log(values);
   return {
     values,
     setValues,
