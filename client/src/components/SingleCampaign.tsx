@@ -95,6 +95,15 @@ export default function SingleCampaign({
                 </>
               ) : (
                 <>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {campaign.description}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {campaign.raised}
+                    </Typography>
+                  </CardContent>
+                  {/* make this a seperate component, render conidtionally. */}
                   <div className="row s-box">
                     {paymentCompleted ? (
                       successMessage()
