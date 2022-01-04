@@ -1,6 +1,8 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
+import axios from "axios";
+
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -26,6 +28,7 @@ const initialValues = {
   title: "",
   description: "",
   photoUrl: "",
+  ownerId: JSON.parse(window.localStorage.getItem("token")!).id,
 };
 
 export default function CreateCampaign(): ReactElement {
@@ -34,14 +37,20 @@ export default function CreateCampaign(): ReactElement {
 
   useEffect(() => {
     const getToken = () => {
-      window.localStorage.getItem("token");
-      setIsLoggedIn(true);
+      if (window.localStorage.getItem("token")) setIsLoggedIn(true);
+      console.log(JSON.parse(window.localStorage.getItem("token")!).email);
     };
+
     getToken();
-  }, [isLoggedIn]);
-  function handleSubmit() {
-    console.log("submit function");
-  }
+  }, []);
+
+  const handleSubmit = async () => {
+    try {
+      await axios.post("/api/campaigns/", values);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const classes = useStyles();
   return (
     <div>
@@ -85,7 +94,7 @@ export default function CreateCampaign(): ReactElement {
           </Grid>
         </Form>
       ) : (
-        <Navigate to="/login" />
+        <div>Please login first.</div>
       )}
     </div>
   );

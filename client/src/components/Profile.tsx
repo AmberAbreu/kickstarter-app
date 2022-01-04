@@ -8,45 +8,42 @@ import Typography from "@material-ui/core/Typography";
 
 import axios from "axios";
 
-interface Props {
-  token: string;
-}
+interface Props {}
 
-export default function Profile({ token }: Props): ReactElement {
+export default function Profile(): ReactElement {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
 
   useEffect(() => {
-    async function fetchCampaigns(token: string) {
+    async function fetchCampaigns(token: any) {
       try {
         setLoading(true);
         const { data } = await axios.get(`/api/users/`, {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: token,
           },
         });
-        setCampaigns(data);
+        setCampaigns(data.campaigns);
         setLoading(false);
+        console.log("data from profile", data);
       } catch (err) {
         console.log(err);
       }
     }
-    fetchCampaigns(token);
+    fetchCampaigns(window.localStorage.getItem("token"));
   }, []);
 
   return (
     <div>
       <Typography>Active Campaigns:</Typography>
-      {loading ? (
+      {campaigns.length === 0 ? (
         <p>nothing yet.</p>
       ) : (
-        <></>
-        // <Grid container>
-        //   {campaigns
-        //     .map((campaign: CampaignI) => {
-        //       return <SingleCampaign id={campaign.id} />;
-        //     })}
-        // </Grid>
+        <Grid container>
+          {campaigns.map((campaign: CampaignI) => {
+            return <SingleCampaign id={campaign.id} />;
+          })}
+        </Grid>
       )}
     </div>
   );

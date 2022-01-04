@@ -62,7 +62,7 @@ interface Props {}
 export default function Home({}: Props): ReactElement {
   const [campaigns, setCampaigns] = useState<CampaignI[]>([]);
   const [token, setToken] = useState("");
-  const id = 1;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -84,16 +84,12 @@ export default function Home({}: Props): ReactElement {
   ];
 
   useEffect(() => {
-    auth.onAuthStateChanged((userCred) => {
-      if (userCred) {
-        window.localStorage.setItem("auth", "true");
-        userCred.getIdToken().then((token) => {
-          console.log("token from home", token);
-          setToken(token);
-        });
-      }
-    });
-  }, []);
+    const getToken = () => {
+      window.localStorage.getItem("token");
+      setIsLoggedIn(true);
+    };
+    getToken();
+  }, [isLoggedIn]);
 
   const RecentCards = (campaign: CampaignI) => {
     return (
@@ -180,7 +176,7 @@ export default function Home({}: Props): ReactElement {
           </Grid>
         </div>
 
-        <div>{token.length ? <Profile token={token} /> : <></>}</div>
+        <div>{isLoggedIn ? <Profile /> : <></>}</div>
 
         <div>
           <Grid container spacing={3}>

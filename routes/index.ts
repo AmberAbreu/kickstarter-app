@@ -8,24 +8,22 @@ const createError = require("http-errors");
 const prisma = new PrismaClient();
 const router = express.Router();
 
+const jwt = require("../utils/jwt");
+
 router.use("/auth", auth);
 
-router.get(`/users/:id`, async (req, res, next) => {
+router.get(`/users/`, async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    const decodeValue = await admin.auth().verifyIdToken(token);
-    if (!decodeValue) {
-      res.json({ message: "Unauthorized" });
+    const { id, email, accessToken } = JSON.parse(req.headers.authorization!);
+    if (jwt.verifyAccessToken(accessToken)) {
+      const userCampaigns = await prisma.user.findUnique({
+        where: { email },
+        include: {
+          campaigns: true,
+        },
+      });
+      res.json(userCampaigns);
     }
-    console.log(decodeValue);
-    const userEmail = decodeValue.email;
-    const userCampaigns = await prisma.user.findUnique({
-      where: { email: userEmail },
-      include: {
-        campaigns: true,
-      },
-    });
-    res.json(userCampaigns);
   } catch (error) {
     next(error);
   }
@@ -33,12 +31,6 @@ router.get(`/users/:id`, async (req, res, next) => {
 
 router.post(`/users`, async (req, res, next) => {
   try {
-    const { email, password, name } = req.body;
-    const user = await admin.auth().createUser({
-      email,
-      password,
-      name,
-    });
     const result = await prisma.user.create({
       data: { ...req.body },
     });
@@ -86,13 +78,13 @@ router.get(`/campaigns/:id`, async (req, res, next) => {
 
 router.post(`/campaigns`, async (req, res, next) => {
   try {
-    const { title, description, authorEmail } = req.body;
+    const { title, description, ownerId } = req.body;
     const result = await prisma.campaign.create({
       data: {
         title,
         description,
-        status: false,
-        owner: { connect: { email: authorEmail } },
+        status: true,
+        owner: { connect: { id: ownerId } },
       },
     });
     res.json(result);
