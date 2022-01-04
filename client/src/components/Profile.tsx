@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { auth } from "../config/firebase";
+
 import SingleCampaign from "./SingleCampaign";
 import { CampaignI } from "./Campaigns";
 

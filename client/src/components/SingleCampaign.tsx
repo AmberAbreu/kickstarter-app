@@ -82,7 +82,7 @@ export default function SingleCampaign({
       console.log(err);
     }
   };
-
+  // fix this so that it opens up and alert or modal to confirm delete and then deletes.
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/campaigns/${id}`);

@@ -5,8 +5,6 @@ import axios from "axios";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { auth } from "../config/firebase";
-import logging from "../config/logging";
 import { TextField, Button } from "@material-ui/core";
 
 interface Props {}

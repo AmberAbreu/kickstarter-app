@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import express from "express";
 
 const auth = require("./auth");
-const admin = require("../config/firebase-config");
+
 const { checkIfAuthenticated } = require("../middlewares/auth");
 const createError = require("http-errors");
 const prisma = new PrismaClient();
