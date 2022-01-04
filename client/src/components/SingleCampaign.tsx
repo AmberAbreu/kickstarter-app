@@ -24,7 +24,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { CampaignI } from "./Campaigns";
-import DonateButton from "./DonateButton";
 
 const stripePromise = loadStripe(
   "pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB"
@@ -143,10 +142,10 @@ export default function SingleCampaign({
                       <React.Fragment>
                         <div className="col-md-7 order-md-1">
                           <Elements stripe={stripePromise}>
-                            <DonateButton
+                            {/* <DonateButton
                               amount={2000}
                               setPaymentCompleted={setPaymentCompleted}
-                            />
+                            /> */}
                           </Elements>
                         </div>
                       </React.Fragment>

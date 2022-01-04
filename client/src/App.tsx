@@ -8,7 +8,7 @@ import Campaigns from "./components/Campaigns";
 import SingleCampaign from "./components/SingleCampaign";
 import CreateCampaign from "./components/formComponents/CreateCampaign";
 import Register from "./components/Register";
-import DonateButton from "./components/DonateButton";
+// import DonateButton from "./components/DonateButton";
 import Home from "./components/Home";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
           <Route path="/campaigns/:id" element={<SingleCampaign />} />
           <Route path="/create" element={<CreateCampaign />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/donate" element={<DonateButton />} />
+          {/* <Route path="/donate" element={<DonateButton />} /> */}
         </Routes>
       </Layout>
     </Router>

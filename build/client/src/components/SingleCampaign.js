@@ -79,7 +79,6 @@ var DialogContent_1 = __importDefault(require("@material-ui/core/DialogContent")
 var useForm_1 = require("./formComponents/useForm");
 var react_stripe_js_1 = require("@stripe/react-stripe-js");
 var stripe_js_1 = require("@stripe/stripe-js");
-var DonateButton_1 = __importDefault(require("./DonateButton"));
 var stripePromise = (0, stripe_js_1.loadStripe)("pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB");
 var successMessage = function () {
     return react_1["default"].createElement("div", { className: "success-msg" }, "... ...");
@@ -180,8 +179,7 @@ function SingleCampaign(_a) {
                         react_1["default"].createElement(Typography_1["default"], { gutterBottom: true, variant: "h5", component: "h2" }, campaign.raised)),
                     react_1["default"].createElement("div", { className: "row s-box" }, paymentCompleted ? (successMessage()) : (react_1["default"].createElement(react_1["default"].Fragment, null,
                         react_1["default"].createElement("div", { className: "col-md-7 order-md-1" },
-                            react_1["default"].createElement(react_stripe_js_1.Elements, { stripe: stripePromise },
-                                react_1["default"].createElement(DonateButton_1["default"], { amount: 2000, setPaymentCompleted: setPaymentCompleted })))))))),
+                            react_1["default"].createElement(react_stripe_js_1.Elements, { stripe: stripePromise }))))))),
                 profile ? (react_1["default"].createElement(react_1["default"].Fragment, null,
                     react_1["default"].createElement(Button_1["default"], { variant: "outlined", onClick: handleClickOpen }, "Edit"),
                     react_1["default"].createElement(Dialog_1["default"], { open: open, onClose: handleClose },

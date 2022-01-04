@@ -11,7 +11,7 @@ var Campaigns_1 = __importDefault(require("./components/Campaigns"));
 var SingleCampaign_1 = __importDefault(require("./components/SingleCampaign"));
 var CreateCampaign_1 = __importDefault(require("./components/formComponents/CreateCampaign"));
 var Register_1 = __importDefault(require("./components/Register"));
-var DonateButton_1 = __importDefault(require("./components/DonateButton"));
+// import DonateButton from "./components/DonateButton";
 var Home_1 = __importDefault(require("./components/Home"));
 function App() {
     return (react_1["default"].createElement(react_router_dom_1.BrowserRouter, null,
@@ -22,8 +22,7 @@ function App() {
                 react_1["default"].createElement(react_router_dom_1.Route, { path: "/campaigns", element: react_1["default"].createElement(Campaigns_1["default"], null) }),
                 react_1["default"].createElement(react_router_dom_1.Route, { path: "/campaigns/:id", element: react_1["default"].createElement(SingleCampaign_1["default"], null) }),
                 react_1["default"].createElement(react_router_dom_1.Route, { path: "/create", element: react_1["default"].createElement(CreateCampaign_1["default"], null) }),
-                react_1["default"].createElement(react_router_dom_1.Route, { path: "/signup", element: react_1["default"].createElement(Register_1["default"], null) }),
-                react_1["default"].createElement(react_router_dom_1.Route, { path: "/donate", element: react_1["default"].createElement(DonateButton_1["default"], null) })))));
+                react_1["default"].createElement(react_router_dom_1.Route, { path: "/signup", element: react_1["default"].createElement(Register_1["default"], null) })))));
 }
 exports["default"] = App;
 //# sourceMappingURL=App.js.map
