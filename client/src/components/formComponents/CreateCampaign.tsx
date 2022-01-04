@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
@@ -24,21 +24,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialValues = {
-  title: "",
-  description: "",
-  photoUrl: "",
-  ownerId: JSON.parse(window.localStorage.getItem("token")!).id,
-};
-
 export default function CreateCampaign(): ReactElement {
-  const { values, setValues, handleInputChange } = useForm(initialValues);
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const initialValues = {
+    title: "",
+    description: "",
+    photoUrl: "",
+    ownerId: JSON.parse(window.localStorage.getItem("token")!)?.id,
+  };
+  const { values, setValues, handleInputChange } = useForm(initialValues);
   useEffect(() => {
     const getToken = () => {
       if (window.localStorage.getItem("token")) setIsLoggedIn(true);
-      console.log(JSON.parse(window.localStorage.getItem("token")!).email);
+      else navigate("/login");
     };
 
     getToken();

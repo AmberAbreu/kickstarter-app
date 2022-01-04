@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const path = require("path");
 
 const cors = require("cors");
 
@@ -18,9 +19,15 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 const route = require("./routes");
-app.use("/api", route);
 
-app.post("/pay", async (request, response) => {
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
+
+app.use("/api", route);
+app.post("/api/pay", async (request, response) => {
   try {
     // Create the PaymentIntent
     let intent = await stripe.paymentIntents.create({
@@ -54,7 +61,7 @@ const generateResponse = (intent) => {
   }
 };
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () =>
   console.log("REST API server ready at: http://localhost:3000")
 );
