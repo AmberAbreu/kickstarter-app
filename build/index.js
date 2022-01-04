@@ -97,20 +97,10 @@ var generateResponse = function (intent) {
         };
     }
 };
-// app.use(express.static(path.resolve(__dirname, "../client/public")));
-// app.use(express.static(path.join(__dirname, '..', 'client/public')))
+app.use(express_1["default"].static(path.resolve(__dirname, "../client/public")));
 // app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/public", "index.html"));
+//   res.sendFile(path.resolve(__dirname, "../client/public", "index.html"));
 // });
-app.get("/", function (req, res) {
-    return res.sendFile(path.join(__dirname, "./client", "public/index.html"));
-});
-// static file-serving middleware
-app.use(express_1["default"].static(path.join(__dirname, "./client", "public")));
-//send static file
-app.use("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "./client", "public/index.html"));
-});
 var port = process.env.PORT || 3001;
 app.listen(port, function () {
     return console.log("REST API server ready at: http://localhost:3000");
