@@ -58,7 +58,7 @@ const generateResponse = (intent) => {
 app.use(express.static(path.resolve(__dirname, "../client/public")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/public"), "index.html");
+  res.sendFile(path.resolve(__dirname, "../client/public", "index.html"));
 });
 
 const port = process.env.PORT || 3001;
