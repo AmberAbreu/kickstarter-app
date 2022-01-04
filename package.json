@@ -43,6 +43,7 @@
     "@mui/material": "^5.2.5",
     "@prisma/client": "^3.7.0",
     "@types/bcrypt": "^5.0.0",
+    "@types/jest": "^27.4.0",
     "@types/material-ui": "^0.21.12",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.1.1",
