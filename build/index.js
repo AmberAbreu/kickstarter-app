@@ -54,7 +54,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express_1["default"].json());
 var route = require("./routes");
-app.use(express_1["default"].static(path.resolve(__dirname, "../client/public/index.html")));
+app.use(express_1["default"].static(path.resolve(__dirname, "../client/public")));
 app.get("*", function (req, res) {
     res.sendFile(path.resolve(__dirname, "../client/public", "index.html"));
 });
