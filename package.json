@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx ts-node index.ts && cd client && npm start",
-    "start": "npx ts-node index.ts"
+    "start": "ts-node index.ts"
   },
   "repository": {
     "type": "git",
