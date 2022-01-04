@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,6 +12,13 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+
+import { useForm, Form } from "./formComponents/useForm";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -18,14 +26,6 @@ import { loadStripe } from "@stripe/stripe-js";
 import { CampaignI } from "./Campaigns";
 import DonateButton from "./DonateButton";
 
-// const campaign = {
-//   id: 0,
-//   title: "Help us get funding",
-//   photoUrl:
-//     "https://s3.amazonaws.com/omiweb/wp-content/uploads/2018/02/23121159/startup.jpg",
-//   received: 10,
-//   description: "We are a startup trying to get funding",
-// };
 const stripePromise = loadStripe(
   "pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB"
 );
@@ -40,14 +40,30 @@ export default function SingleCampaign({
   photoUrl,
   status,
   raised,
+  profile,
 }: CampaignI): ReactElement {
+  const initialValues = {
+    title: title,
+    description: description,
+    photoUrl: photoUrl,
+  };
+  const { values, setValues, handleInputChange } = useForm(initialValues);
   let [campaign, setCampaign] = useState<CampaignI | null>(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   let { id: paramsId } = useParams();
 
   const [paymentCompleted, setPaymentCompleted] = useState(false);
 
   useEffect(() => {
-    console.log(paramsId);
+    console.log(title, description);
     async function getCampaign(id: number) {
       try {
         const { data } = await axios.get(`/api/campaigns/${id}`);
@@ -58,6 +74,23 @@ export default function SingleCampaign({
     }
     id ? getCampaign(id) : getCampaign(Number(paramsId));
   }, []);
+
+  const handleSubmit = async () => {
+    try {
+      await axios.put(`/api/campaigns/${id}`, values);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/campaigns/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       {!campaign ? (
@@ -80,7 +113,6 @@ export default function SingleCampaign({
             </CardContent>
 
             <CardActions>
-              {/* Logic: if there is a params id, display the details, if not display learn more */}
               {!paramsId ? (
                 <>
                   <Link to={`/campaigns/${campaign.id}`}>
@@ -121,6 +153,61 @@ export default function SingleCampaign({
                     )}
                   </div>
                 </>
+              )}
+              {profile ? (
+                <>
+                  <Button variant="outlined" onClick={handleClickOpen}>
+                    Edit
+                  </Button>
+                  <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>Subscribe</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        To subscribe to this website, please enter your email
+                        address here. We will send updates occasionally.
+                      </DialogContentText>
+                      <Form>
+                        <TextField
+                          variant="outlined"
+                          label="title"
+                          name="title"
+                          value={values.title}
+                          onChange={handleInputChange}
+                        />
+                        <TextField
+                          variant="outlined"
+                          label="description"
+                          name="description"
+                          value={values.description}
+                          onChange={handleInputChange}
+                        />
+                        <TextField
+                          variant="outlined"
+                          name="photoUrl"
+                          label="photoUrl"
+                          value={values.photoUrl}
+                          onChange={handleInputChange}
+                        />
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          onClick={handleSubmit}
+                        >
+                          Submit
+                        </Button>
+                      </Form>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose}>Cancel</Button>
+                      <Button onClick={handleClose}>Subscribe</Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Button onClick={handleDelete}>Delete</Button>{" "}
+                </>
+              ) : (
+                <></>
               )}
             </CardActions>
           </Card>

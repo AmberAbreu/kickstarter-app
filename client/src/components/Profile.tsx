@@ -41,7 +41,15 @@ export default function Profile(): ReactElement {
       ) : (
         <Grid container>
           {campaigns.map((campaign: CampaignI) => {
-            return <SingleCampaign id={campaign.id} />;
+            return (
+              <SingleCampaign
+                id={campaign.id}
+                title={campaign.title}
+                description={campaign.description}
+                photoUrl={campaign.photoUrl}
+                profile={true}
+              />
+            );
           })}
         </Grid>
       )}

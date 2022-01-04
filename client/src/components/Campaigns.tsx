@@ -13,6 +13,7 @@ export interface CampaignI {
   photoUrl?: string;
   status?: boolean;
   raised?: number;
+  profile?: boolean;
 }
 
 export default function Campaigns(): ReactElement {
