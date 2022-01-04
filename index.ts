@@ -20,6 +20,8 @@ app.use(express.json());
 
 const route = require("./routes");
 
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
 app.use("/api", route);
 app.post("/api/pay", async (request, response) => {
   try {
@@ -55,10 +57,8 @@ const generateResponse = (intent) => {
   }
 };
 
-app.use(express.static(path.resolve(__dirname, "../client/public")));
-
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/public", "index.html"));
+  res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
 const port = process.env.PORT || 3001;
