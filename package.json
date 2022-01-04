@@ -6,12 +6,17 @@
     "schema": "prisma/schema.prisma"
   },
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
+  "engines": {
+    "node": "14.16.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx ts-node index.ts && cd client && npm start",
-    "start": "ts-node index.ts",
-    "build": "tsc"
+    "start": "node index.js",
+    "postinstall": "tsc",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "repository": {
     "type": "git",
