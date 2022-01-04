@@ -64,13 +64,13 @@ const generateResponse = (intent) => {
 // });
 
 app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, ".", "client/public/index.html"))
+  res.sendFile(path.join(__dirname, "./client/", "public/index.html"))
 );
 // static file-serving middleware
-app.use(express.static(path.join(__dirname, ".", "client/public")));
+app.use(express.static(path.join(__dirname, "./client/", "public")));
 //send static file
 app.use("*", (req, res) => {
-  res.sendFile(path.join(__dirname, ".", "client/public/index.html"));
+  res.sendFile(path.join(__dirname, "./client/", "public/index.html"));
 });
 
 const port = process.env.PORT || 3001;
