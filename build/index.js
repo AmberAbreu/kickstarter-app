@@ -54,9 +54,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express_1["default"].json());
 var route = require("./routes");
-app.use(express_1["default"].static(path.resolve(__dirname, "client/public/index.html")));
+app.use(express_1["default"].static(path.resolve(__dirname, "../client/public/index.html")));
 app.get("*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "client/public", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../client/public", "index.html"));
 });
 app.use("/api", route);
 app.post("/api/pay", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
