@@ -97,9 +97,9 @@ var generateResponse = function (intent) {
         };
     }
 };
-app.use(express_1["default"].static(path.resolve(__dirname, "../client/build")));
+app.use(express_1["default"].static(path.resolve(__dirname, "../client/public")));
 app.get("*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+    res.sendFile(path.join(__dirname, "../client/public", "index.html"));
 });
 var port = process.env.PORT || 3001;
 app.listen(port, function () {
