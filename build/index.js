@@ -45,6 +45,7 @@ var prisma = new client_1.PrismaClient();
 require("dotenv").config();
 var bodyParser = require("body-parser");
 var multer = require("multer");
+var path = require("path");
 var cors = require("cors");
 var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 var app = (0, express_1["default"])();
@@ -53,8 +54,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express_1["default"].json());
 var route = require("./routes");
+app.use(express_1["default"].static(path.resolve(__dirname, "./client/build")));
+app.get("*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "./client/public", "index.html"));
+});
 app.use("/api", route);
-app.post("/pay", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/api/pay", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var intent, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -96,7 +101,7 @@ var generateResponse = function (intent) {
         };
     }
 };
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 app.listen(port, function () {
     return console.log("REST API server ready at: http://localhost:3000");
 });

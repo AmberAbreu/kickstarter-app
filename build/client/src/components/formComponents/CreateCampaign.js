@@ -59,6 +59,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
+var react_router_dom_1 = require("react-router-dom");
 var axios_1 = __importDefault(require("axios"));
 var TextField_1 = __importDefault(require("@material-ui/core/TextField"));
 var core_1 = require("@material-ui/core");
@@ -78,21 +79,24 @@ var useStyles = (0, core_2.makeStyles)(function (theme) { return ({
         margin: "20px"
     }
 }); });
-var initialValues = {
-    title: "",
-    description: "",
-    photoUrl: "",
-    ownerId: JSON.parse(window.localStorage.getItem("token")).id
-};
 function CreateCampaign() {
     var _this = this;
-    var _a = (0, useForm_1.useForm)(initialValues), values = _a.values, setValues = _a.setValues, handleInputChange = _a.handleInputChange;
+    var _a;
+    var navigate = (0, react_router_dom_1.useNavigate)();
     var _b = (0, react_1.useState)(false), isLoggedIn = _b[0], setIsLoggedIn = _b[1];
+    var initialValues = {
+        title: "",
+        description: "",
+        photoUrl: "",
+        ownerId: (_a = JSON.parse(window.localStorage.getItem("token"))) === null || _a === void 0 ? void 0 : _a.id
+    };
+    var _c = (0, useForm_1.useForm)(initialValues), values = _c.values, setValues = _c.setValues, handleInputChange = _c.handleInputChange;
     (0, react_1.useEffect)(function () {
         var getToken = function () {
             if (window.localStorage.getItem("token"))
                 setIsLoggedIn(true);
-            console.log(JSON.parse(window.localStorage.getItem("token")).email);
+            else
+                navigate("/login");
         };
         getToken();
     }, []);
