@@ -77,12 +77,6 @@ var DialogContentText_1 = __importDefault(require("@material-ui/core/DialogConte
 var DialogActions_1 = __importDefault(require("@material-ui/core/DialogActions"));
 var DialogContent_1 = __importDefault(require("@material-ui/core/DialogContent"));
 var useForm_1 = require("./formComponents/useForm");
-var react_stripe_js_1 = require("@stripe/react-stripe-js");
-var stripe_js_1 = require("@stripe/stripe-js");
-var stripePromise = (0, stripe_js_1.loadStripe)("pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB");
-var successMessage = function () {
-    return react_1["default"].createElement("div", { className: "success-msg" }, "... ...");
-};
 function SingleCampaign(_a) {
     var _this = this;
     var id = _a.id, title = _a.title, description = _a.description, photoUrl = _a.photoUrl, status = _a.status, raised = _a.raised, profile = _a.profile;
@@ -94,6 +88,7 @@ function SingleCampaign(_a) {
     var _b = (0, useForm_1.useForm)(initialValues), values = _b.values, setValues = _b.setValues, handleInputChange = _b.handleInputChange;
     var _c = (0, react_1.useState)(null), campaign = _c[0], setCampaign = _c[1];
     var _d = react_1["default"].useState(false), open = _d[0], setOpen = _d[1];
+    var navigate = (0, react_router_dom_1.useNavigate)();
     var handleClickOpen = function () {
         setOpen(true);
     };
@@ -101,7 +96,6 @@ function SingleCampaign(_a) {
         setOpen(false);
     };
     var paramsId = (0, react_router_dom_1.useParams)().id;
-    var _e = (0, react_1.useState)(false), paymentCompleted = _e[0], setPaymentCompleted = _e[1];
     (0, react_1.useEffect)(function () {
         console.log(title, description);
         function getCampaign(id) {
@@ -145,7 +139,6 @@ function SingleCampaign(_a) {
             }
         });
     }); };
-    // fix this so that it opens up and alert or modal to confirm delete and then deletes.
     var handleDelete = function () { return __awaiter(_this, void 0, void 0, function () {
         var error_1;
         return __generator(this, function (_a) {
@@ -155,6 +148,7 @@ function SingleCampaign(_a) {
                     return [4 /*yield*/, axios_1["default"]["delete"]("/api/campaigns/".concat(id))];
                 case 1:
                     _a.sent();
+                    navigate("/");
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
@@ -164,22 +158,20 @@ function SingleCampaign(_a) {
             }
         });
     }); };
-    return (react_1["default"].createElement("div", null, !campaign ? (react_1["default"].createElement("div", null, "Nothing here yet.")) : (react_1["default"].createElement(core_1.Grid, { item: true, key: campaign.id },
+    return (react_1["default"].createElement(react_1["default"].Fragment, null, !campaign ? (react_1["default"].createElement("div", null, "Nothing here yet.")) : (react_1["default"].createElement(core_1.Grid, { item: true, xs: 4, key: campaign.id },
         react_1["default"].createElement(Card_1["default"], null,
             react_1["default"].createElement(CardActionArea_1["default"], null,
                 react_1["default"].createElement(CardMedia_1["default"], { component: "img", alt: "Campaign Image", height: "140", image: campaign.photoUrl })),
             react_1["default"].createElement(CardContent_1["default"], null,
-                react_1["default"].createElement(Typography_1["default"], { gutterBottom: true, variant: "h5", component: "h2" }, campaign.title)),
+                react_1["default"].createElement(Typography_1["default"], { variant: "h5", component: "h1" }, campaign.title)),
             react_1["default"].createElement(CardActions_1["default"], null,
                 !paramsId ? (react_1["default"].createElement(react_1["default"].Fragment, null,
                     react_1["default"].createElement(react_router_dom_2.Link, { to: "/campaigns/".concat(campaign.id) },
-                        react_1["default"].createElement(Button_1["default"], { variant: "contained", color: "primary", style: { color: "#FFFFFF" } }, "Learn More")))) : (react_1["default"].createElement(react_1["default"].Fragment, null,
+                        react_1["default"].createElement(Button_1["default"], { variant: "contained", color: "primary" }, "Learn More")))) : (react_1["default"].createElement(react_1["default"].Fragment, null,
                     react_1["default"].createElement(CardContent_1["default"], null,
-                        react_1["default"].createElement(Typography_1["default"], { gutterBottom: true, variant: "h5", component: "h2" }, campaign.description),
-                        react_1["default"].createElement(Typography_1["default"], { gutterBottom: true, variant: "h5", component: "h2" }, campaign.raised)),
-                    react_1["default"].createElement("div", { className: "row s-box" }, paymentCompleted ? (successMessage()) : (react_1["default"].createElement(react_1["default"].Fragment, null,
-                        react_1["default"].createElement("div", { className: "col-md-7 order-md-1" },
-                            react_1["default"].createElement(react_stripe_js_1.Elements, { stripe: stripePromise }))))))),
+                        react_1["default"].createElement(Typography_1["default"], { variant: "h5", component: "h5" }, campaign.description),
+                        react_1["default"].createElement("form", { action: "/create-checkout-session", method: "POST" },
+                            react_1["default"].createElement(Button_1["default"], { type: "submit", color: "primary" }, "Contribute $10"))))),
                 profile ? (react_1["default"].createElement(react_1["default"].Fragment, null,
                     react_1["default"].createElement(Button_1["default"], { variant: "outlined", onClick: handleClickOpen }, "Edit"),
                     react_1["default"].createElement(Dialog_1["default"], { open: open, onClose: handleClose },

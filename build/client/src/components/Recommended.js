@@ -59,31 +59,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
-var SingleCampaign_1 = __importDefault(require("./SingleCampaign"));
-var core_1 = require("@material-ui/core");
+var react_router_dom_1 = require("react-router-dom");
+var Grid_1 = __importDefault(require("@material-ui/core/Grid"));
+var Card_1 = __importDefault(require("@material-ui/core/Card"));
+var CardActionArea_1 = __importDefault(require("@material-ui/core/CardActionArea"));
+var CardActions_1 = __importDefault(require("@material-ui/core/CardActions"));
+var CardContent_1 = __importDefault(require("@material-ui/core/CardContent"));
+var CardMedia_1 = __importDefault(require("@material-ui/core/CardMedia"));
 var Typography_1 = __importDefault(require("@material-ui/core/Typography"));
+var Button_1 = __importDefault(require("@material-ui/core/Button"));
+var styles_1 = require("@material-ui/core/styles");
 var axios_1 = __importDefault(require("axios"));
-function Profile() {
-    var _a = (0, react_1.useState)(false), loading = _a[0], setLoading = _a[1];
-    var _b = (0, react_1.useState)([]), campaigns = _b[0], setCampaigns = _b[1];
+var useStyles = (0, styles_1.makeStyles)(function () { return ({
+    cardAction: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
+    },
+    container: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "10px"
+    }
+}); });
+function Recommended() {
+    var _a = (0, react_1.useState)([]), campaigns = _a[0], setCampaigns = _a[1];
     (0, react_1.useEffect)(function () {
-        function fetchCampaigns(token) {
+        function fetchData() {
             return __awaiter(this, void 0, void 0, function () {
-                var data, err_1;
+                var response, err_1;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             _a.trys.push([0, 2, , 3]);
-                            setLoading(true);
-                            return [4 /*yield*/, axios_1["default"].get("/api/users/", {
-                                    headers: {
-                                        Authorization: token
-                                    }
-                                })];
+                            return [4 /*yield*/, axios_1["default"].get("/api/campaigns")];
                         case 1:
-                            data = (_a.sent()).data;
-                            setCampaigns(data.campaigns);
-                            setLoading(false);
+                            response = _a.sent();
+                            setCampaigns(response.data);
                             return [3 /*break*/, 3];
                         case 2:
                             err_1 = _a.sent();
@@ -94,13 +107,33 @@ function Profile() {
                 });
             });
         }
-        fetchCampaigns(window.localStorage.getItem("token"));
+        fetchData();
     }, []);
-    return (react_1["default"].createElement("div", null,
-        react_1["default"].createElement(Typography_1["default"], null, "My Campaigns:"),
-        campaigns.length === 0 ? (react_1["default"].createElement("p", null, "nothing yet.")) : (react_1["default"].createElement(core_1.Grid, { container: true }, campaigns.map(function (campaign) {
-            return (react_1["default"].createElement(SingleCampaign_1["default"], { id: campaign.id, title: campaign.title, description: campaign.description, photoUrl: campaign.photoUrl, profile: true }));
-        })))));
+    var recommended = [
+        campaigns[campaigns.length - 1],
+        campaigns[campaigns.length - 2],
+        campaigns[campaigns.length - 3],
+        campaigns[campaigns.length - 4],
+    ];
+    var classes = useStyles();
+    return (react_1["default"].createElement(react_1["default"].Fragment, null,
+        react_1["default"].createElement(Typography_1["default"], { component: "h1", variant: "h3", align: "center", color: "primary" }, "Recommended"),
+        react_1["default"].createElement("div", { className: classes.container }, campaigns.length ? (react_1["default"].createElement(Grid_1["default"], { container: true, className: classes.container, spacing: 3 }, recommended.map(function (campaign) { return (react_1["default"].createElement(Grid_1["default"], { item: true },
+            react_1["default"].createElement(Card_1["default"], { key: campaign.id, style: {
+                    width: 400,
+                    height: 400,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between"
+                } },
+                react_1["default"].createElement(CardMedia_1["default"], { component: "img", alt: "Campaign Image", height: "200", image: campaign.photoUrl, title: campaign.title }),
+                react_1["default"].createElement(CardContent_1["default"], null,
+                    react_1["default"].createElement(Typography_1["default"], { gutterBottom: true, variant: "h6", component: "h3" }, campaign.title),
+                    react_1["default"].createElement(Typography_1["default"], { variant: "body2", component: "p" }, campaign.description)),
+                react_1["default"].createElement(CardActionArea_1["default"], { className: classes.cardAction },
+                    react_1["default"].createElement(CardActions_1["default"], null,
+                        react_1["default"].createElement(react_router_dom_1.Link, { to: "/campaigns/".concat(campaign.id) },
+                            react_1["default"].createElement(Button_1["default"], { size: "small", color: "primary", variant: "contained", style: { color: "#FFFFFF" } }, "See More"))))))); }))) : (react_1["default"].createElement("p", null, "Nothing yet")))));
 }
-exports["default"] = Profile;
-//# sourceMappingURL=Profile.js.map
+exports["default"] = Recommended;
+//# sourceMappingURL=Recommended.js.map

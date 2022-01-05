@@ -49,6 +49,7 @@ var path = require("path");
 var cors = require("cors");
 var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 var app = (0, express_1["default"])();
+var DOMAIN = "http://localhost:3000" || "https://amber-kickstarter.herokuapp.com/";
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -56,53 +57,41 @@ app.use(express_1["default"].json());
 var route = require("./routes");
 app.use(express_1["default"].static(path.resolve(__dirname, "../client/build")));
 app.use("/api", route);
-app.post("/api/pay", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var intent, e_1;
+app.post("/create-checkout-session", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var session, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, stripe.paymentIntents.create({
-                        payment_method: request.body.payment_method_id,
-                        description: "Test payment",
-                        amount: request.body.amount * 100,
-                        currency: "inr",
-                        confirmation_method: "manual",
-                        confirm: true
+                return [4 /*yield*/, stripe.checkout.sessions.create({
+                        line_items: [
+                            {
+                                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                                price: "price_1KERNLHmzDj3FrL55uyInLvC",
+                                quantity: 1
+                            },
+                        ],
+                        mode: "payment",
+                        success_url: "".concat(DOMAIN, "/success"),
+                        cancel_url: "".concat(DOMAIN, "/canceled")
                     })];
             case 1:
-                intent = _a.sent();
-                // Send the response to the client
-                response.send(generateResponse(intent));
+                session = _a.sent();
+                res.redirect(303, session.url);
                 return [3 /*break*/, 3];
             case 2:
-                e_1 = _a.sent();
-                // Display error on client
-                return [2 /*return*/, response.send({ error: e_1.message })];
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-var generateResponse = function (intent) {
-    if (intent.status === "succeeded") {
-        // The payment didn’t need any additional actions and completed!
-        // Handle post-payment fulfillment
-        return {
-            success: true
-        };
-    }
-    else {
-        // Invalid status
-        return {
-            error: "Invalid PaymentIntent status"
-        };
-    }
-};
 app.get("*", function (req, res) {
     res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 var port = process.env.PORT || 3001;
 app.listen(port, function () {
-    return console.log("REST API server ready at: http://localhost:3000");
+    return console.log("REST API server ready at: http://localhost:3001");
 });
 //# sourceMappingURL=index.js.map

@@ -173,18 +173,19 @@ router.get("/campaigns/:id", function (req, res, next) { return __awaiter(void 0
     });
 }); });
 router.post("/campaigns", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, title, description, ownerId, result, error_6;
+    var _a, title, description, photoUrl, ownerEmail, result, error_6;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                _a = req.body, title = _a.title, description = _a.description, ownerId = _a.ownerId;
+                _a = req.body, title = _a.title, description = _a.description, photoUrl = _a.photoUrl, ownerEmail = _a.ownerEmail;
                 return [4 /*yield*/, prisma.campaign.create({
                         data: {
                             title: title,
                             description: description,
+                            photoUrl: photoUrl,
                             status: true,
-                            owner: { connect: { id: ownerId } }
+                            owner: { connect: { email: ownerEmail } }
                         }
                     })];
             case 1:

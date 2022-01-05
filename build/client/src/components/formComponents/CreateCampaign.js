@@ -62,15 +62,15 @@ var react_1 = __importStar(require("react"));
 var react_router_dom_1 = require("react-router-dom");
 var axios_1 = __importDefault(require("axios"));
 var TextField_1 = __importDefault(require("@material-ui/core/TextField"));
-var core_1 = require("@material-ui/core");
+var Button_1 = __importDefault(require("@material-ui/core/Button"));
 var Grid_1 = __importDefault(require("@material-ui/core/Grid"));
-var core_2 = require("@material-ui/core");
+var core_1 = require("@material-ui/core");
+var Typography_1 = __importDefault(require("@material-ui/core/Typography"));
 var useForm_1 = require("./useForm");
-var useStyles = (0, core_2.makeStyles)(function (theme) { return ({
+var useStyles = (0, core_1.makeStyles)(function (theme) { return ({
     gridItem: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
         margin: "10px",
         height: "100vh"
@@ -84,19 +84,19 @@ function CreateCampaign() {
     var _a;
     var navigate = (0, react_router_dom_1.useNavigate)();
     var _b = (0, react_1.useState)(false), isLoggedIn = _b[0], setIsLoggedIn = _b[1];
+    var _c = (0, react_1.useState)(""), userId = _c[0], setUserId = _c[1];
     var initialValues = {
         title: "",
         description: "",
         photoUrl: "",
-        ownerId: (_a = JSON.parse(window.localStorage.getItem("token"))) === null || _a === void 0 ? void 0 : _a.id
+        ownerEmail: (_a = JSON.parse(window.localStorage.getItem("token"))) === null || _a === void 0 ? void 0 : _a.email
     };
-    var _c = (0, useForm_1.useForm)(initialValues), values = _c.values, setValues = _c.setValues, handleInputChange = _c.handleInputChange;
+    var _d = (0, useForm_1.useForm)(initialValues), values = _d.values, setValues = _d.setValues, handleInputChange = _d.handleInputChange;
     (0, react_1.useEffect)(function () {
         var getToken = function () {
-            if (window.localStorage.getItem("token"))
+            if (window.localStorage.getItem("token")) {
                 setIsLoggedIn(true);
-            else
-                navigate("/login");
+            }
         };
         getToken();
     }, []);
@@ -109,6 +109,7 @@ function CreateCampaign() {
                     return [4 /*yield*/, axios_1["default"].post("/api/campaigns/", values)];
                 case 1:
                     _a.sent();
+                    navigate("/");
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
@@ -121,11 +122,12 @@ function CreateCampaign() {
     var classes = useStyles();
     return (react_1["default"].createElement("div", null, isLoggedIn ? (react_1["default"].createElement(useForm_1.Form, null,
         react_1["default"].createElement(Grid_1["default"], { container: true, className: classes.gridItem },
+            react_1["default"].createElement(Typography_1["default"], null, "Create a Campaign"),
             react_1["default"].createElement(TextField_1["default"], { variant: "outlined", label: "title", name: "title", value: values.title, onChange: handleInputChange }),
             react_1["default"].createElement(TextField_1["default"], { variant: "outlined", label: "description", name: "description", value: values.description, onChange: handleInputChange }),
             react_1["default"].createElement(TextField_1["default"], { variant: "outlined", name: "photoUrl", label: "photoUrl", value: values.photoUrl, onChange: handleInputChange }),
             react_1["default"].createElement("div", null,
-                react_1["default"].createElement(core_1.Button, { type: "submit", variant: "contained", color: "primary", size: "large", onClick: handleSubmit }, "Submit"))))) : (react_1["default"].createElement("div", null, "Please login first."))));
+                react_1["default"].createElement(Button_1["default"], { type: "submit", variant: "contained", color: "primary", size: "large", onClick: handleSubmit }, "Submit"))))) : (react_1["default"].createElement("div", null, "Please login first."))));
 }
 exports["default"] = CreateCampaign;
 //# sourceMappingURL=CreateCampaign.js.map

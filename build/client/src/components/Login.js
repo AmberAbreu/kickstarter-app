@@ -95,8 +95,8 @@ function Login(_a) {
         react_1["default"].createElement(core_1.Button, { disabled: authenticating, type: "submit", variant: "contained", color: "primary", size: "large", onClick: handleLogin }, "Login"),
         react_1["default"].createElement("small", null,
             react_1["default"].createElement("p", null,
-                "Already have an account? ",
-                react_1["default"].createElement(react_router_dom_1.Link, { to: "/login" }, "Login."),
+                "Don't have an account? ",
+                react_1["default"].createElement(react_router_dom_1.Link, { to: "/signup" }, "Sign up."),
                 " "))));
 }
 exports["default"] = Login;

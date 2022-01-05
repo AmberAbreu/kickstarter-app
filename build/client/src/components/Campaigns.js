@@ -59,6 +59,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
+var react_router_dom_1 = require("react-router-dom");
 var SingleCampaign_1 = __importDefault(require("./SingleCampaign"));
 var core_1 = require("@material-ui/core");
 var axios_1 = __importDefault(require("axios"));
@@ -91,9 +92,7 @@ function Campaigns() {
         }
         fetchCampaigns();
     }, []);
-    return (react_1["default"].createElement("div", null, loading ? (react_1["default"].createElement("p", null, "nothing yet.")) : (react_1["default"].createElement(core_1.Grid, { container: true }, campaigns
-        // .sort((a, b) => a.title.localeCompare(b.title))
-        .map(function (campaign) {
+    return (react_1["default"].createElement(react_1["default"].Fragment, null, loading ? (react_1["default"].createElement(react_router_dom_1.Link, { to: "create" }, "Create a Campaign?")) : (react_1["default"].createElement(core_1.Grid, { container: true, spacing: 3 }, campaigns.map(function (campaign) {
         return react_1["default"].createElement(SingleCampaign_1["default"], { id: campaign.id });
     })))));
 }
