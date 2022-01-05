@@ -12,6 +12,9 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
+const DOMAIN =
+  "http://localhost:3000" || "https://amber-kickstarter.herokuapp.com/";
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -23,39 +26,27 @@ const route = require("./routes");
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.use("/api", route);
-app.post("/api/pay", async (request, response) => {
+
+app.post("/create-checkout-session", async (req, res) => {
   try {
-    // Create the PaymentIntent
-    let intent = await stripe.paymentIntents.create({
-      payment_method: request.body.payment_method_id,
-      description: "Test payment",
-      amount: request.body.amount * 100,
-      currency: "inr",
-      confirmation_method: "manual",
-      confirm: true,
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+          price: "price_1KERNLHmzDj3FrL55uyInLvC",
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${DOMAIN}/success`,
+      cancel_url: `${DOMAIN}/canceled`,
     });
-    // Send the response to the client
-    response.send(generateResponse(intent));
-  } catch (e: any) {
-    // Display error on client
-    return response.send({ error: e.message });
+    console.log("this is the session", session);
+    res.redirect(303, session.url);
+  } catch (error) {
+    console.log(error);
   }
 });
-
-const generateResponse = (intent) => {
-  if (intent.status === "succeeded") {
-    // The payment didn’t need any additional actions and completed!
-    // Handle post-payment fulfillment
-    return {
-      success: true,
-    };
-  } else {
-    // Invalid status
-    return {
-      error: "Invalid PaymentIntent status",
-    };
-  }
-};
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
@@ -63,5 +54,5 @@ app.get("*", (req, res) => {
 
 const port = process.env.PORT || 3001;
 app.listen(port, () =>
-  console.log("REST API server ready at: http://localhost:3000")
+  console.log("REST API server ready at: http://localhost:3001")
 );

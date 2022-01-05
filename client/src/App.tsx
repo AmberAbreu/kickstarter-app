@@ -1,4 +1,5 @@
 import React from "react";
+import "@stripe/stripe-js";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -8,7 +9,8 @@ import Campaigns from "./components/Campaigns";
 import SingleCampaign from "./components/SingleCampaign";
 import CreateCampaign from "./components/formComponents/CreateCampaign";
 import Register from "./components/Register";
-// import DonateButton from "./components/DonateButton";
+import Success from "./components/Success";
+import Canceled from "./components/Canceled";
 import Home from "./components/Home";
 
 function App() {
@@ -22,7 +24,8 @@ function App() {
           <Route path="/campaigns/:id" element={<SingleCampaign />} />
           <Route path="/create" element={<CreateCampaign />} />
           <Route path="/signup" element={<Register />} />
-          {/* <Route path="/donate" element={<DonateButton />} /> */}
+          <Route path="/success" element={<Success />} />
+          <Route path="/canceled" element={<Canceled />} />
         </Routes>
       </Layout>
     </Router>

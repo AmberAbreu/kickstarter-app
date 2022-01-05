@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Grid } from "@material-ui/core";
@@ -20,18 +20,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 import { useForm, Form } from "./formComponents/useForm";
 
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-
 import { CampaignI } from "./Campaigns";
 
-const stripePromise = loadStripe(
-  "pk_test_51KCd1hHmzDj3FrL5iEnwBxwn9a1QoXwE2lKXN04eAfdTTL0UdcUxwLKPshctLTBe7iHJRn3Kpcw3DzdT6EcOhNCD00AZEseqrB"
-);
-
-const successMessage = () => {
-  return <div className="success-msg">... ...</div>;
-};
 export default function SingleCampaign({
   id,
   title,
@@ -50,6 +40,8 @@ export default function SingleCampaign({
   let [campaign, setCampaign] = useState<CampaignI | null>(null);
   const [open, setOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -58,8 +50,6 @@ export default function SingleCampaign({
     setOpen(false);
   };
   let { id: paramsId } = useParams();
-
-  const [paymentCompleted, setPaymentCompleted] = useState(false);
 
   useEffect(() => {
     console.log(title, description);
@@ -134,23 +124,10 @@ export default function SingleCampaign({
                       {campaign.raised}
                     </Typography>
                   </CardContent>
-                  {/* make this a seperate component, render conidtionally. */}
-                  <div className="row s-box">
-                    {paymentCompleted ? (
-                      successMessage()
-                    ) : (
-                      <React.Fragment>
-                        <div className="col-md-7 order-md-1">
-                          <Elements stripe={stripePromise}>
-                            {/* <DonateButton
-                              amount={2000}
-                              setPaymentCompleted={setPaymentCompleted}
-                            /> */}
-                          </Elements>
-                        </div>
-                      </React.Fragment>
-                    )}
-                  </div>
+                  {/* THIS IS WHERE THE CHECKOUT BUTTON IS GOING TO BE. */}
+                  <form action="/create-checkout-session" method="POST">
+                    <Button type="submit">Contribute $10</Button>
+                  </form>
                 </>
               )}
               {profile ? (

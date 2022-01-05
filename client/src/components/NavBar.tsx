@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -37,6 +37,17 @@ export default function NavBar({}: Props): ReactElement {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const getToken = () => {
+      if (window.localStorage.getItem("token")) setIsLoggedIn(true);
+      else navigate("/login");
+    };
+
+    getToken();
+  }, []);
+
   async function handleLogout() {
     try {
       window.localStorage.removeItem("token");
@@ -58,10 +69,14 @@ export default function NavBar({}: Props): ReactElement {
         <Link to="/campaigns">
           <Typography className={classes.link}>Fund a Campaign</Typography>
         </Link>
-        <Link to="/profile">
-          <Typography className={classes.link}>My Campaigns</Typography>
-        </Link>
-        <Button onClick={handleLogout}>Logout</Button>
+
+        {isLoggedIn ? (
+          <Typography onClick={handleLogout} className={classes.link}>
+            Logout
+          </Typography>
+        ) : (
+          <></>
+        )}
       </div>
     </nav>
   );
