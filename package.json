@@ -2,7 +2,7 @@
   "name": "kickstarter-app",
   "version": "1.0.0",
   "prisma": {
-    "seed": "node prisma/seed.js",
+    "seed": "node build/prisma/seed.js",
     "schema": "prisma/schema.prisma"
   },
   "description": "",
