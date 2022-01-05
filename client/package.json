@@ -54,6 +54,7 @@
       "last 1 safari version"
     ]
   },
+  "homepage": "https://amber-kickstarter.herokuapp.com/",
   "devDependencies": {
     "@types/material-ui": "^0.21.12"
   }
