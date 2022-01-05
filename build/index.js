@@ -101,7 +101,7 @@ var generateResponse = function (intent) {
 app.get("*", function (req, res) {
     res.sendFile(path.resolve(__dirname, "client/build", "index.html"));
 });
-console.log("this is the path of the html file", path.resolve(__dirname, "/client/build", "index.html"));
+console.log("this is the path of the html file", path.resolve(__dirname, "client/build", "index.html"));
 var port = process.env.PORT || 3001;
 app.listen(port, function () {
     return console.log("REST API server ready at: http://localhost:3000");

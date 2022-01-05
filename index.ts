@@ -63,7 +63,7 @@ app.get("*", (req, res) => {
 
 console.log(
   "this is the path of the html file",
-  path.resolve(__dirname, "/client/build", "index.html")
+  path.resolve(__dirname, "client/build", "index.html")
 );
 
 const port = process.env.PORT || 3001;

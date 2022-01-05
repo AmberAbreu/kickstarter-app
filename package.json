@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/AmberAbreu/kickstarter-app/issues"
   },
-  "homepage": "https://amber-kickstarter.herokuapp.com/",
+  "homepage": ".",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.4",
