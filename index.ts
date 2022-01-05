@@ -41,7 +41,6 @@ app.post("/create-checkout-session", async (req, res) => {
       success_url: `${DOMAIN}/success`,
       cancel_url: `${DOMAIN}/canceled`,
     });
-    console.log("this is the session", session);
     res.redirect(303, session.url);
   } catch (error) {
     console.log(error);

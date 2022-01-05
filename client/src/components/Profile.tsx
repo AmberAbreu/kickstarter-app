@@ -25,7 +25,6 @@ export default function Profile(): ReactElement {
         });
         setCampaigns(data.campaigns);
         setLoading(false);
-        console.log("data from profile", data);
       } catch (err) {
         console.log(err);
       }
@@ -35,7 +34,7 @@ export default function Profile(): ReactElement {
 
   return (
     <div>
-      <Typography>Active Campaigns:</Typography>
+      <Typography>My Campaigns:</Typography>
       {campaigns.length === 0 ? (
         <p>nothing yet.</p>
       ) : (

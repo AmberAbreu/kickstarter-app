@@ -71,21 +71,22 @@ export default function SingleCampaign({
       console.log(err);
     }
   };
-  // fix this so that it opens up and alert or modal to confirm delete and then deletes.
+
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/campaigns/${id}`);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div>
+    <>
       {!campaign ? (
         <div>Nothing here yet.</div>
       ) : (
-        <Grid item key={campaign.id}>
+        <Grid item xs={4} key={campaign.id}>
           <Card>
             <CardActionArea>
               <CardMedia
@@ -96,7 +97,7 @@ export default function SingleCampaign({
               />
             </CardActionArea>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography variant="h5" component="h1">
                 {campaign.title}
               </Typography>
             </CardContent>
@@ -105,11 +106,7 @@ export default function SingleCampaign({
               {!paramsId ? (
                 <>
                   <Link to={`/campaigns/${campaign.id}`}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      style={{ color: "#FFFFFF" }}
-                    >
+                    <Button variant="contained" color="primary">
                       Learn More
                     </Button>
                   </Link>
@@ -117,17 +114,16 @@ export default function SingleCampaign({
               ) : (
                 <>
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography variant="h5" component="h5">
                       {campaign.description}
                     </Typography>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {campaign.raised}
-                    </Typography>
+
+                    <form action="/create-checkout-session" method="POST">
+                      <Button type="submit" color="primary">
+                        Contribute $10
+                      </Button>
+                    </form>
                   </CardContent>
-                  {/* THIS IS WHERE THE CHECKOUT BUTTON IS GOING TO BE. */}
-                  <form action="/create-checkout-session" method="POST">
-                    <Button type="submit">Contribute $10</Button>
-                  </form>
                 </>
               )}
               {profile ? (
@@ -189,6 +185,6 @@ export default function SingleCampaign({
           </Card>
         </Grid>
       )}
-    </div>
+    </>
   );
 }

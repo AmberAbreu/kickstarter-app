@@ -1,4 +1,5 @@
 import React, { ReactElement, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import SingleCampaign from "./SingleCampaign";
 
@@ -33,19 +34,18 @@ export default function Campaigns(): ReactElement {
     }
     fetchCampaigns();
   }, []);
+
   return (
-    <div>
+    <>
       {loading ? (
-        <p>nothing yet.</p>
+        <Link to="create">Create a Campaign?</Link>
       ) : (
-        <Grid container>
-          {campaigns
-            // .sort((a, b) => a.title.localeCompare(b.title))
-            .map((campaign: CampaignI) => {
-              return <SingleCampaign id={campaign.id} />;
-            })}
+        <Grid container spacing={3}>
+          {campaigns.map((campaign: CampaignI) => {
+            return <SingleCampaign id={campaign.id} />;
+          })}
         </Grid>
       )}
-    </div>
+    </>
   );
 }

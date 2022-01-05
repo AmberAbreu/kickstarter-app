@@ -1,12 +1,13 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 
 import axios from "axios";
 
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 import { useForm, Form } from "./useForm";
 
@@ -14,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   gridItem: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
     margin: "10px",
     height: "100vh",
@@ -27,17 +27,20 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateCampaign(): ReactElement {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
+
   const initialValues = {
     title: "",
     description: "",
     photoUrl: "",
-    ownerId: JSON.parse(window.localStorage.getItem("token")!)?.id,
+    ownerEmail: JSON.parse(window.localStorage.getItem("token")!)?.email,
   };
   const { values, setValues, handleInputChange } = useForm(initialValues);
   useEffect(() => {
     const getToken = () => {
-      if (window.localStorage.getItem("token")) setIsLoggedIn(true);
-      else navigate("/login");
+      if (window.localStorage.getItem("token")) {
+        setIsLoggedIn(true);
+      }
     };
 
     getToken();
@@ -46,6 +49,7 @@ export default function CreateCampaign(): ReactElement {
   const handleSubmit = async () => {
     try {
       await axios.post("/api/campaigns/", values);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -56,7 +60,7 @@ export default function CreateCampaign(): ReactElement {
       {isLoggedIn ? (
         <Form>
           <Grid container className={classes.gridItem}>
-            {/* <Grid className={classes.gridItem} item xs={6}> */}
+            <Typography>Create a Campaign</Typography>
             <TextField
               variant="outlined"
               label="title"
@@ -89,7 +93,6 @@ export default function CreateCampaign(): ReactElement {
                 Submit
               </Button>
             </div>
-            {/* </Grid> */}
           </Grid>
         </Form>
       ) : (

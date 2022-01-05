@@ -31,8 +31,7 @@ export default function Register({}: Props): ReactElement {
       email: values.email,
       password: values.password,
     });
-    // console.log("this is data,", data);
-    // console.log("access token?", data.data.accessToken);
+
     window.localStorage.setItem("token", JSON.stringify(data.data));
     navigate("/");
   };

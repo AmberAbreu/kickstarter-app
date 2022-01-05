@@ -78,13 +78,15 @@ router.get(`/campaigns/:id`, async (req, res, next) => {
 
 router.post(`/campaigns`, async (req, res, next) => {
   try {
-    const { title, description, ownerId } = req.body;
+    const { title, description, photoUrl, ownerEmail } = req.body;
+
     const result = await prisma.campaign.create({
       data: {
         title,
         description,
+        photoUrl,
         status: true,
-        owner: { connect: { id: ownerId } },
+        owner: { connect: { email: ownerEmail } },
       },
     });
     res.json(result);

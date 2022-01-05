@@ -61,7 +61,7 @@ export default function Login({}: Props): ReactElement {
       </Button>
       <small>
         <p>
-          Already have an account? <Link to="/login">Login.</Link>{" "}
+          Don't have an account? <Link to="/signup">Sign up.</Link>{" "}
         </p>
       </small>
     </div>

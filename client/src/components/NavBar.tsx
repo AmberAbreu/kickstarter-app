@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
   link: {
     color: "#FFFFFF",
     fontSize: 20,
+    textDecoration: "none",
   },
   navLinks: {
     display: "flex",
@@ -75,7 +76,9 @@ export default function NavBar({}: Props): ReactElement {
             Logout
           </Typography>
         ) : (
-          <></>
+          <Link to="/signup">
+            <Typography className={classes.link}>Signup</Typography>
+          </Link>
         )}
       </div>
     </nav>
