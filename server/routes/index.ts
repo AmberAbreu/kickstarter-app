@@ -8,7 +8,7 @@ const createError = require("http-errors");
 const prisma = new PrismaClient();
 const router = express.Router();
 
-const jwt = require("../utils/jwt");
+const jwt = require("../services/utils/jwt");
 
 router.use("/auth", auth);
 

@@ -6,15 +6,15 @@
     "schema": "prisma/schema.prisma"
   },
   "description": "",
-  "main": "index.ts",
+  "main": "server/index.ts",
   "engines": {
     "node": "14.16.1"
   },
   "scripts": {
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx ts-node index.ts && cd client && npm start",
-    "start": "node build/index.js && cd client && npm start",
+    "dev": "npx ts-node server/index.ts && cd client && npm start",
+    "start": "node build/server/index.js && cd client && npm start",
     "build": "cd client && npm install && npm run build",
     "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },

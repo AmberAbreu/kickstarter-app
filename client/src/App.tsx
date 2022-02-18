@@ -4,14 +4,14 @@ import "@stripe/stripe-js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Layout from "./components/Layout";
-import Login from "./components/Login";
-import Campaigns from "./components/Campaigns";
-import SingleCampaign from "./components/SingleCampaign";
-import CreateCampaign from "./components/formComponents/CreateCampaign";
-import Register from "./components/Register";
-import Success from "./components/Success";
-import Canceled from "./components/Canceled";
-import Home from "./components/Home";
+import Login from "./pages/Login";
+import Campaigns from "./pages/Campaigns";
+import SingleCampaignDetails from "./pages/SingleCampaignDetails";
+import CreateCampaign from "./pages/CreateCampaign";
+import Register from "./pages/Register";
+import Success from "./pages/Success";
+import Canceled from "./pages/Canceled";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/campaigns" element={<Campaigns />} />
-          <Route path="/campaigns/:id" element={<SingleCampaign />} />
+          <Route path="/campaigns/:id" element={<SingleCampaignDetails />} />
           <Route path="/create" element={<CreateCampaign />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/success" element={<Success />} />

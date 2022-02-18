@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 import createError from "http-errors";
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
-const jwt = require("../utils/jwt");
+const jwt = require("./utils/jwt");
 
 class AuthService {
   static async register(data) {

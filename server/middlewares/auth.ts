@@ -1,4 +1,4 @@
-const jwt = require("../utils/jwt");
+const jwt = require("../services/utils/jwt");
 import createError from "http-errors";
 
 const auth = async (req, res, next) => {

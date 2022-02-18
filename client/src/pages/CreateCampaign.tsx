@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-import { useForm, Form } from "./useForm";
+import { useForm, Form } from "../components/form/useForm";
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {

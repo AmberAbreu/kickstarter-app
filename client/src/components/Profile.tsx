@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 
-import SingleCampaign from "./SingleCampaign";
-import { CampaignI } from "./Campaigns";
+import SingleCampaign from "../pages/SingleCampaignDetails";
+import { CampaignI } from "../pages/Campaigns";
 
 import { Grid } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -41,13 +41,7 @@ export default function Profile(): ReactElement {
         <Grid container>
           {campaigns.map((campaign: CampaignI) => {
             return (
-              <SingleCampaign
-                id={campaign.id}
-                title={campaign.title}
-                description={campaign.description}
-                photoUrl={campaign.photoUrl}
-                profile={true}
-              />
+              <div></div>
             );
           })}
         </Grid>

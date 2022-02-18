@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { useForm, Form } from "./formComponents/useForm";
+import { useForm, Form } from "../components/form/useForm";
 
 import { useNavigate, Link } from "react-router-dom";
 

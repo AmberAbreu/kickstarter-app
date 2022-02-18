@@ -1,20 +1,19 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import SingleCampaign from "./SingleCampaign";
+import SingleCampaign from "../components/SingleCampaign";
 
 import { Grid } from "@material-ui/core";
 
 import axios from "axios";
 
 export interface CampaignI {
-  id?: any;
-  title?: string;
-  description?: string;
-  photoUrl?: string;
-  status?: boolean;
-  raised?: number;
-  profile?: boolean;
+    id: any;
+    title: string;
+    description: string;
+    photoUrl: string;
+    isHomePage?: boolean;
+
 }
 
 export default function Campaigns(): ReactElement {
@@ -42,7 +41,7 @@ export default function Campaigns(): ReactElement {
       ) : (
         <Grid container spacing={3}>
           {campaigns.map((campaign: CampaignI) => {
-            return <SingleCampaign id={campaign.id} />;
+            return <SingleCampaign id={campaign.id} title={campaign.title} description={campaign.description} photoUrl={campaign.photoUrl} isHomePage={true}/>;
           })}
         </Grid>
       )}
