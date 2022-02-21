@@ -16,7 +16,7 @@ const initialValues = {
 
 export default function Login({}: Props): ReactElement {
   const [authenticated, setAuthenticated] = useState(
-    false || window.localStorage.getItem("auth") === "true"
+    false
   );
   const [token, setToken] = useState("");
   const [authenticating, setAuthenticating] = useState(false);
@@ -26,10 +26,27 @@ export default function Login({}: Props): ReactElement {
   let navigate = useNavigate();
 
   const handleLogin = async () => {
-    let { data } = await axios.post("/api/auth/login", values);
-    window.localStorage.setItem("token", JSON.stringify(data.data));
-    navigate("/");
+    await axios.post("/api/auth/login", values)
+    .then((response) => {
+      if (!response.data.status) {
+        setAuthenticated(false)
+      }else {
+        localStorage.setItem("token", response.data.data.accessToken)
+        setAuthenticated(true)
+      }
+    })
+
   };
+
+  function verifyAuth() {
+    axios.get('/api/users', {
+      headers: {
+        "x-access-token": localStorage.getItem("token") || '{}'
+      },
+    }).then( (response) => {
+      console.log(response)
+    })
+  }
 
   return (
     <div>
@@ -59,9 +76,10 @@ export default function Login({}: Props): ReactElement {
       >
         Login
       </Button>
+      {authenticated && (<Button onClick={verifyAuth}>Check if authenticated</Button>)}
       <small>
         <p>
-          Don't have an account? <Link to="/signup">Sign up.</Link>{" "}
+          Don't have an account? <Link to="/signup">Sign up.</Link>
         </p>
       </small>
     </div>

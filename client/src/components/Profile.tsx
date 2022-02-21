@@ -29,7 +29,6 @@ export default function Profile(): ReactElement {
         console.log(err);
       }
     }
-    fetchCampaigns(window.localStorage.getItem("token"));
   }, []);
 
   return (

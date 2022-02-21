@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
+import SingleCampaignDonateButton from "../components/SingleCampaignDonateButton";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -18,7 +20,7 @@ export default function SingleCampaign(): ReactElement {
   let { id } = useParams();
 
   useEffect(() => {
-    async function getCampaign(id: number) {
+    async function getCampaign(id: any) {
       try {
         const { data } = await axios.get(`/api/campaigns/${id}`);
         setCampaign(data);
@@ -26,19 +28,22 @@ export default function SingleCampaign(): ReactElement {
         console.log(err);
       }
     }
-  }, []);
+    getCampaign(id)
+  }, [campaign]);
 
   return (
-
-    <Card>
-    <CardContent>
-      <Typography variant="h5" component="h5">
-      {campaign?.title}
-      </Typography>
-
-      
-    </CardContent>
-    </Card>
-   
+    <div className="blog-post" 
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+      }}>
+      <h1>{campaign?.title || "Title"}</h1>
+      <span>{campaign?.description}</span>
+      <img src={campaign?.photoUrl} alt={campaign?.description}/>
+      <div className="blog-post-content" />
+      <SingleCampaignDonateButton/>
+    </div>
   );
 }

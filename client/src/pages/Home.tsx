@@ -10,7 +10,7 @@ import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
-const colortheme = createTheme({
+export const colortheme = createTheme({
   palette: {
     primary: { main: "#A4D7C2", contrastText: "#000" },
     secondary: { main: "#3C4A3E", contrastText: "#000" },
@@ -39,6 +39,7 @@ const useStyles = makeStyles(() => ({
     backgroundPosition: "center",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: '65px',
   },
 }));
 
@@ -49,13 +50,6 @@ export default function Home({}: Props): ReactElement {
 
   const classes = useStyles();
 
-  useEffect(() => {
-    const getToken = () => {
-      window.localStorage.getItem("token");
-      setIsLoggedIn(true);
-    };
-    getToken();
-  }, [isLoggedIn]);
 
   return (
     <div>
@@ -85,16 +79,14 @@ export default function Home({}: Props): ReactElement {
               >
                 Kickstarter Funding
               </Typography>
-              <Link to="create">
-                <Button variant="outlined" color="primary">
+              <Link to="create" style={{textDecoration: 'none'}}>
+                <Button variant="outlined" color="primary" >
                   Get Started
                 </Button>
               </Link>
             </Grid>
           </Grid>
         </div>
-
-        <div>{isLoggedIn ? <Profile /> : <></>}</div>
 
         <Recommended />
       </ThemeProvider>

@@ -1,3 +1,5 @@
+export {}
+
 const router = require("express").Router();
 const user = require("../controllers/auth.controller");
 const auth = require("../middlewares/auth");

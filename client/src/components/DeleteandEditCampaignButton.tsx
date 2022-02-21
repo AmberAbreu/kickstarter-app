@@ -11,7 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import { useForm, Form } from "../components/form/useForm";
+import { useForm, Form } from "./form/useForm";
 import { CampaignI } from '../pages/Campaigns';
 
 export default function DeleteCampaignButton({id, title, description, photoUrl}: CampaignI) {

@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("./utils/jwt");
 
 class AuthService {
+  
   static async register(data) {
     const { email } = data;
     data.password = bcrypt.hashSync(data.password, 8);
@@ -16,6 +17,7 @@ class AuthService {
 
     return data;
   }
+
   static async login(data) {
     const { email, password } = data;
     const user = await prisma.user.findUnique({

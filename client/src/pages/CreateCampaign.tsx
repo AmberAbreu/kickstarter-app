@@ -26,30 +26,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateCampaign(): ReactElement {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
   const initialValues = {
     title: "",
     description: "",
     photoUrl: "",
-    ownerEmail: JSON.parse(window.localStorage.getItem("token")!)?.email,
+    ownerEmail: window.localStorage.getItem("token"),
   };
   const { values, setValues, handleInputChange } = useForm(initialValues);
-  useEffect(() => {
-    const getToken = () => {
-      if (window.localStorage.getItem("token")) {
-        setIsLoggedIn(true);
-      }
-    };
 
-    getToken();
-  }, []);
 
   const handleSubmit = async () => {
     try {
       await axios.post("/api/campaigns/", values);
-      navigate("/");
+      
     } catch (err) {
       console.log(err);
     }
@@ -57,9 +48,8 @@ export default function CreateCampaign(): ReactElement {
   const classes = useStyles();
   return (
     <div>
-      {isLoggedIn ? (
         <Form>
-          <Grid container className={classes.gridItem}>
+          <Grid container className={classes.gridItem} style={{marginTop: '70px'}}>
             <Typography>Create a Campaign</Typography>
             <TextField
               variant="outlined"
@@ -95,9 +85,7 @@ export default function CreateCampaign(): ReactElement {
             </div>
           </Grid>
         </Form>
-      ) : (
-        <div>Please login first.</div>
-      )}
+      
     </div>
   );
 }

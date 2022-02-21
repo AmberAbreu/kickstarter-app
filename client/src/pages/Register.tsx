@@ -26,14 +26,13 @@ export default function Register({}: Props): ReactElement {
     if (values.password !== values.confirmPassword) {
       console.error("passwords do not match");
     }
-    let { data } = await axios.post("/api/auth/", {
+    let { data }: any = await axios.post("/api/auth/", {
       name: values.name,
       email: values.email,
       password: values.password,
+    }).then((response) => {
+      console.log(response)
     });
-
-    window.localStorage.setItem("token", JSON.stringify(data.data));
-    navigate("/");
   };
 
   return (

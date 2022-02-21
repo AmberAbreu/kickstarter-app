@@ -34,7 +34,7 @@ function SingleCampaign({id, title, description, photoUrl, isHomePage}: Campaign
 	  </CardContent>
 
 	  <CardActions>
-			<Link to={`/campaigns/${id}`}>
+			<Link to={`/campaigns/${id}`} style={{  textDecoration: 'none'}} >
 			  <Button variant="contained" color="primary">
 				Learn More
 			  </Button>

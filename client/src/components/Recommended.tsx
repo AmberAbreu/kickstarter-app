@@ -93,7 +93,7 @@ export default function Recommended(): ReactElement {
                   </CardContent>
                   <CardActionArea className={classes.cardAction}>
                     <CardActions>
-                      <Link to={`/campaigns/${campaign.id}`}>
+                      <Link to={`/campaigns/${campaign.id}`}  style={{  textDecoration: 'none'}}>
                         <Button
                           size="small"
                           color="primary"
