@@ -59,7 +59,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
-var SingleCampaign_1 = __importDefault(require("./SingleCampaign"));
 var core_1 = require("@material-ui/core");
 var Typography_1 = __importDefault(require("@material-ui/core/Typography"));
 var axios_1 = __importDefault(require("axios"));
@@ -94,12 +93,11 @@ function Profile() {
                 });
             });
         }
-        fetchCampaigns(window.localStorage.getItem("token"));
     }, []);
     return (react_1["default"].createElement("div", null,
         react_1["default"].createElement(Typography_1["default"], null, "My Campaigns:"),
         campaigns.length === 0 ? (react_1["default"].createElement("p", null, "nothing yet.")) : (react_1["default"].createElement(core_1.Grid, { container: true }, campaigns.map(function (campaign) {
-            return (react_1["default"].createElement(SingleCampaign_1["default"], { id: campaign.id, title: campaign.title, description: campaign.description, photoUrl: campaign.photoUrl, profile: true }));
+            return (react_1["default"].createElement("div", null));
         })))));
 }
 exports["default"] = Profile;

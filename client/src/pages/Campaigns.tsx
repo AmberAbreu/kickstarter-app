@@ -39,7 +39,7 @@ export default function Campaigns(): ReactElement {
       {loading ? (
         <Link to="create">Create a Campaign?</Link>
       ) : (
-        <Grid container spacing={3}  style={{marginTop: '70px'}}>
+        <Grid container spacing={4}  style={{marginTop: '70px', justifyContent: 'center'}}>
           {campaigns.map((campaign: CampaignI) => {
             return <SingleCampaign id={campaign.id} title={campaign.title} description={campaign.description} photoUrl={campaign.photoUrl} isHomePage={true}/>;
           })}

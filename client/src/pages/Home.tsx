@@ -65,7 +65,6 @@ export default function Home({}: Props): ReactElement {
               <Typography
                 component="h2"
                 variant="h1"
-                color="primary"
                 align="left"
                 gutterBottom
               >
@@ -73,7 +72,6 @@ export default function Home({}: Props): ReactElement {
               </Typography>
               <Typography
                 variant="h5"
-                color="primary"
                 align="left"
                 gutterBottom
               >

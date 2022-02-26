@@ -27,12 +27,14 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateCampaign(): ReactElement {
   const navigate = useNavigate();
   const [userId, setUserId] = useState("");
+  const [user, setUser] = useState("")
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const initialValues = {
     title: "",
     description: "",
     photoUrl: "",
-    ownerEmail: window.localStorage.getItem("token"),
+    ownerEmail: window.localStorage.getItem("user"),
   };
   const { values, setValues, handleInputChange } = useForm(initialValues);
 
@@ -40,16 +42,28 @@ export default function CreateCampaign(): ReactElement {
   const handleSubmit = async () => {
     try {
       await axios.post("/api/campaigns/", values);
-      
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = loggedInUser;
+      setUser(foundUser);
+      setIsLoggedIn(true)
+    }else{
+      setIsLoggedIn(false)
+      console.log("no user was found", isLoggedIn)
+    }
+  }, []);
+
   const classes = useStyles();
   return (
     <div>
-        <Form>
-          <Grid container className={classes.gridItem} style={{marginTop: '70px'}}>
+       { !isLoggedIn ? <p>Please sign in.</p> : <Form>
+          <Grid container className={classes.gridItem} style={{marginTop: '80px'}}>
             <Typography>Create a Campaign</Typography>
             <TextField
               variant="outlined"
@@ -84,7 +98,7 @@ export default function CreateCampaign(): ReactElement {
               </Button>
             </div>
           </Grid>
-        </Form>
+        </Form>}
       
     </div>
   );

@@ -8,29 +8,29 @@ const jwt = require("../services/utils/jwt");
 
 router.get(`/`, async (req, res, next) => {
 	try {
-	  const token = req.headers['x-access-token'];
-	  if (!token) {
+		const token = req.headers['x-access-token'];
+		if (!token.length) {
 		res.json("Please submit an appropriate token")
-	  }else {
-		jwt.verifyAccessToken(token)
-	  }
-	  res.send("User authenticated")
+		}else {
+			jwt.verifyAccessToken(token)
+			res.json("User authenticated")
+		}
 	} catch (error) {
-	  next(error);
+		next(error);
 	}
-  });
-  
-  router.post(`/`, async (req, res, next) => {
+});
+
+router.post(`/`, async (req, res, next) => {
 	try {
-	  const result = await prisma.user.create({
+		const result = await prisma.user.create({
 		data: { ...req.body },
-	  });
-	  res.json(result);
+	});
+	res.json(result);
 	} catch (error) {
-	  next(error);
+		next(error);
 	}
-  });
-  
+});
+
   router.put("/:id", async (req, res, next) => {
 	try {
 	  const { id } = req.params;

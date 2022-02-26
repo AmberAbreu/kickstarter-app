@@ -60,47 +60,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
 var react_router_dom_1 = require("react-router-dom");
+var axios_1 = __importDefault(require("axios"));
 var styles_1 = require("@material-ui/core/styles");
-var Typography_1 = __importDefault(require("@material-ui/core/Typography"));
+var AppBar_1 = __importDefault(require("@mui/material/AppBar"));
+var Box_1 = __importDefault(require("@mui/material/Box"));
+var Toolbar_1 = __importDefault(require("@mui/material/Toolbar"));
+var IconButton_1 = __importDefault(require("@mui/material/IconButton"));
+var Typography_1 = __importDefault(require("@mui/material/Typography"));
+var Menu_1 = __importDefault(require("@mui/material/Menu"));
+var Menu_2 = __importDefault(require("@mui/icons-material/Menu"));
+var Container_1 = __importDefault(require("@mui/material/Container"));
+var MenuItem_1 = __importDefault(require("@mui/material/MenuItem"));
+var Button_1 = __importDefault(require("@mui/material/Button"));
+var pages = [{ title: 'Create A Campaign', link: '/create' }, { title: 'Fund A Campaign', link: '/campaigns' }];
+var settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 var useStyles = (0, styles_1.makeStyles)(function () { return ({
-    container: {
-        backgroundColor: "#A4D7C2",
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "row",
-        height: 80
-    },
     link: {
-        color: "#FFFFFF",
-        fontSize: 20,
-        textDecoration: "none"
-    },
-    navLinks: {
-        display: "flex",
-        alignItems: "center",
-        padding: "20px",
-        width: "33%",
-        justifyContent: "space-between"
+        textDecoration: 'none',
+        color: 'white'
     }
 }); });
 function NavBar(_a) {
     var classes = useStyles();
     var navigate = (0, react_router_dom_1.useNavigate)();
-    var _b = (0, react_1.useState)(false), isLoggedIn = _b[0], setIsLoggedIn = _b[1];
-    (0, react_1.useEffect)(function () {
-        var getToken = function () {
-            if (window.localStorage.getItem("token"))
-                setIsLoggedIn(true);
-            else
-                navigate("/login");
-        };
-        getToken();
-    }, []);
-    function handleLogout() {
+    var _b = react_1["default"].useState(null), anchorElNav = _b[0], setAnchorElNav = _b[1];
+    var _c = react_1["default"].useState(null), anchorElUser = _c[0], setAnchorElUser = _c[1];
+    var _d = (0, react_1.useState)(false), isLoggedIn = _d[0], setIsLoggedIn = _d[1];
+    var handleOpenNavMenu = function (event) {
+        setAnchorElNav(event.currentTarget);
+    };
+    var handleOpenUserMenu = function (event) {
+        setAnchorElUser(event.currentTarget);
+    };
+    var handleCloseNavMenu = function () {
+        setAnchorElNav(null);
+    };
+    var handleCloseUserMenu = function () {
+        setAnchorElUser(null);
+    };
+    function handleSignOut() {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    window.localStorage.removeItem("token");
+                    window.localStorage.removeItem('token');
+                    window.localStorage.removeItem('user');
                     navigate("/login");
                 }
                 catch (error) {
@@ -110,16 +113,52 @@ function NavBar(_a) {
             });
         });
     }
-    return (react_1["default"].createElement("nav", { className: classes.container },
-        react_1["default"].createElement("div", { className: classes.navLinks },
-            react_1["default"].createElement(react_router_dom_1.Link, { to: "/" },
-                react_1["default"].createElement(Typography_1["default"], { className: classes.link }, "Home")),
-            react_1["default"].createElement(react_router_dom_1.Link, { to: "/create" },
-                react_1["default"].createElement(Typography_1["default"], { className: classes.link }, "Create A Campaign")),
-            react_1["default"].createElement(react_router_dom_1.Link, { to: "/campaigns" },
-                react_1["default"].createElement(Typography_1["default"], { className: classes.link }, "Fund a Campaign")),
-            isLoggedIn ? (react_1["default"].createElement(Typography_1["default"], { onClick: handleLogout, className: classes.link }, "Logout")) : (react_1["default"].createElement(react_router_dom_1.Link, { to: "/signup" },
-                react_1["default"].createElement(Typography_1["default"], { className: classes.link }, "Signup"))))));
+    (0, react_1.useEffect)(function () {
+        try {
+            axios_1["default"].get('/api/users', {
+                headers: {
+                    "x-access-token": localStorage.getItem("token") || ''
+                }
+            })
+                .then(function (response) {
+                if (response.data === 'User authenticated') {
+                    console.log(response.data);
+                    setIsLoggedIn(true);
+                }
+            });
+            console.log(isLoggedIn);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }, [isLoggedIn]);
+    return (react_1["default"].createElement(AppBar_1["default"], { style: { backgroundColor: "#A4D7C2" } },
+        react_1["default"].createElement(Container_1["default"], { maxWidth: "xl" },
+            react_1["default"].createElement(Toolbar_1["default"], { disableGutters: true },
+                react_1["default"].createElement(Typography_1["default"], { variant: "h6", noWrap: true, component: "div", sx: { mr: 2, display: { xs: 'none', md: 'flex' } } },
+                    react_1["default"].createElement(react_router_dom_1.Link, { to: '/', className: classes.link }, "AchievIt")),
+                react_1["default"].createElement(Box_1["default"], { sx: { flexGrow: 1, display: { xs: 'flex', md: 'none' } } },
+                    react_1["default"].createElement(IconButton_1["default"], { size: "large", "aria-label": "account of current user", "aria-controls": "menu-appbar", "aria-haspopup": "true", onClick: handleOpenNavMenu, color: "inherit" },
+                        react_1["default"].createElement(Menu_2["default"], null)),
+                    react_1["default"].createElement(Menu_1["default"], { id: "menu-appbar", anchorEl: anchorElNav, anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'left'
+                        }, keepMounted: true, transformOrigin: {
+                            vertical: 'top',
+                            horizontal: 'left'
+                        }, open: Boolean(anchorElNav), onClose: handleCloseNavMenu, sx: {
+                            display: { xs: 'block', md: 'none' }
+                        } }, pages.map(function (page) { return (react_1["default"].createElement(MenuItem_1["default"], { key: page.title, onClick: handleCloseNavMenu },
+                        react_1["default"].createElement(Typography_1["default"], { textAlign: "center" }, page.title))); }))),
+                react_1["default"].createElement(Typography_1["default"], { variant: "h6", noWrap: true, component: "div", sx: { flexGrow: 1, display: { xs: 'flex', md: 'none' } } }, "KICKSTARTER APP"),
+                react_1["default"].createElement(Box_1["default"], { sx: { flexGrow: 1, display: { xs: 'none', md: 'flex' } } }, pages.map(function (page) { return (react_1["default"].createElement(Button_1["default"], { key: page.title, onClick: handleCloseNavMenu, sx: { my: 2, color: 'white', display: 'block' } },
+                    react_1["default"].createElement(react_router_dom_1.Link, { to: page.link, className: classes.link }, page.title))); })),
+                react_1["default"].createElement(Box_1["default"], null, isLoggedIn ?
+                    (react_1["default"].createElement(react_router_dom_1.Link, { to: "/", style: { textDecoration: 'none' } },
+                        react_1["default"].createElement(Typography_1["default"], { className: classes.link, onClick: handleSignOut }, "Sign Out")))
+                    :
+                        (react_1["default"].createElement(react_router_dom_1.Link, { to: "/login", style: { textDecoration: 'none' } },
+                            react_1["default"].createElement(Typography_1["default"], { className: classes.link }, "Log In"))))))));
 }
 exports["default"] = NavBar;
 //# sourceMappingURL=NavBar.js.map

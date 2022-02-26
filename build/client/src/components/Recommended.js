@@ -59,15 +59,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
-var react_router_dom_1 = require("react-router-dom");
+var SingleCampaign_1 = __importDefault(require("./SingleCampaign"));
 var Grid_1 = __importDefault(require("@material-ui/core/Grid"));
-var Card_1 = __importDefault(require("@material-ui/core/Card"));
-var CardActionArea_1 = __importDefault(require("@material-ui/core/CardActionArea"));
-var CardActions_1 = __importDefault(require("@material-ui/core/CardActions"));
-var CardContent_1 = __importDefault(require("@material-ui/core/CardContent"));
-var CardMedia_1 = __importDefault(require("@material-ui/core/CardMedia"));
 var Typography_1 = __importDefault(require("@material-ui/core/Typography"));
-var Button_1 = __importDefault(require("@material-ui/core/Button"));
 var styles_1 = require("@material-ui/core/styles");
 var axios_1 = __importDefault(require("axios"));
 var useStyles = (0, styles_1.makeStyles)(function () { return ({
@@ -113,27 +107,11 @@ function Recommended() {
         campaigns[campaigns.length - 1],
         campaigns[campaigns.length - 2],
         campaigns[campaigns.length - 3],
-        campaigns[campaigns.length - 4],
     ];
     var classes = useStyles();
     return (react_1["default"].createElement(react_1["default"].Fragment, null,
         react_1["default"].createElement(Typography_1["default"], { component: "h1", variant: "h3", align: "center", color: "primary" }, "Recommended"),
-        react_1["default"].createElement("div", { className: classes.container }, campaigns.length ? (react_1["default"].createElement(Grid_1["default"], { container: true, className: classes.container, spacing: 3 }, recommended.map(function (campaign) { return (react_1["default"].createElement(Grid_1["default"], { item: true },
-            react_1["default"].createElement(Card_1["default"], { key: campaign.id, style: {
-                    width: 400,
-                    height: 400,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between"
-                } },
-                react_1["default"].createElement(CardMedia_1["default"], { component: "img", alt: "Campaign Image", height: "200", image: campaign.photoUrl, title: campaign.title }),
-                react_1["default"].createElement(CardContent_1["default"], null,
-                    react_1["default"].createElement(Typography_1["default"], { gutterBottom: true, variant: "h6", component: "h3" }, campaign.title),
-                    react_1["default"].createElement(Typography_1["default"], { variant: "body2", component: "p" }, campaign.description)),
-                react_1["default"].createElement(CardActionArea_1["default"], { className: classes.cardAction },
-                    react_1["default"].createElement(CardActions_1["default"], null,
-                        react_1["default"].createElement(react_router_dom_1.Link, { to: "/campaigns/".concat(campaign.id) },
-                            react_1["default"].createElement(Button_1["default"], { size: "small", color: "primary", variant: "contained", style: { color: "#FFFFFF" } }, "See More"))))))); }))) : (react_1["default"].createElement("p", null, "Nothing yet")))));
+        react_1["default"].createElement("div", { className: classes.container }, campaigns.length ? (react_1["default"].createElement(Grid_1["default"], { container: true, className: classes.container, spacing: 3 }, recommended.map(function (campaign) { return (react_1["default"].createElement(SingleCampaign_1["default"], { id: campaign.id, title: campaign.title, description: campaign.description, photoUrl: campaign.photoUrl })); }))) : (react_1["default"].createElement("p", null, "Nothing yet")))));
 }
 exports["default"] = Recommended;
 //# sourceMappingURL=Recommended.js.map

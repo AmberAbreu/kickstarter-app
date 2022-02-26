@@ -18,7 +18,6 @@ export default function Login({}: Props): ReactElement {
   const [authenticated, setAuthenticated] = useState(
     false
   );
-  const [token, setToken] = useState("");
   const [authenticating, setAuthenticating] = useState(false);
   const [error, setError] = useState("");
   const { values, setValues, handleInputChange } = useForm(initialValues);
@@ -32,25 +31,29 @@ export default function Login({}: Props): ReactElement {
         setAuthenticated(false)
       }else {
         localStorage.setItem("token", response.data.data.accessToken)
+        localStorage.setItem("user",response.data.data.email)
         setAuthenticated(true)
+        navigate('/')
       }
     })
 
   };
 
-  function verifyAuth() {
-    axios.get('/api/users', {
+  async function verifyAuth() {
+    await axios.get('/api/users', {
       headers: {
-        "x-access-token": localStorage.getItem("token") || '{}'
+        "x-access-token": localStorage.getItem("token") || ''
       },
     }).then( (response) => {
       console.log(response)
+    }).catch(error => {
+      console.log(error)
     })
   }
 
   return (
-    <div>
-      <Form>
+    <div style={{marginTop: '70px'}}>
+      <Form >
         <TextField
           variant="outlined"
           label="email"
@@ -73,10 +76,10 @@ export default function Login({}: Props): ReactElement {
         color="primary"
         size="large"
         onClick={handleLogin}
+        style={{marginLeft:'10px'}}
       >
         Login
       </Button>
-      {authenticated && (<Button onClick={verifyAuth}>Check if authenticated</Button>)}
       <small>
         <p>
           Don't have an account? <Link to="/signup">Sign up.</Link>

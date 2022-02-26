@@ -1,3 +1,6 @@
-import { ReactElement } from "react";
-import { CampaignI } from "./Campaigns";
-export default function SingleCampaign({ id, title, description, photoUrl, status, raised, profile, }: CampaignI): ReactElement;
+import { CampaignI } from '../pages/Campaigns';
+declare function SingleCampaign({ id, title, description, photoUrl, isHomePage }: CampaignI): JSX.Element;
+declare namespace SingleCampaign {
+    var propTypes: {};
+}
+export default SingleCampaign;

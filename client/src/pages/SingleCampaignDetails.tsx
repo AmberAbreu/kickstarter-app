@@ -37,7 +37,8 @@ export default function SingleCampaign(): ReactElement {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginTop: '70px'
       }}>
       <h1>{campaign?.title || "Title"}</h1>
       <span>{campaign?.description}</span>

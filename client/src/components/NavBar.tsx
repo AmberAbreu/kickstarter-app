@@ -1,6 +1,8 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import axios from 'axios'
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppBar from '@mui/material/AppBar';
@@ -11,10 +13,8 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button'
 
 const pages = [{title: 'Create A Campaign', link: '/create'}, {title: 'Fund A Campaign', link: '/campaigns'}];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -23,34 +23,11 @@ interface Props {}
 
 const useStyles = makeStyles(() => ({
 
-  container: {
-    overflow: 'hidden',
-    
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    height: 80,
-    justifyContent: "space-between",
-    position: "fixed",
-    top: 0, /* Position the navbar at the top of the page */
-    width: '100%', /* Full width */
-    zIndex: 1
-  },
   link: {
-    color: "#FFFFFF",
-    fontSize: 20,
-  },
-  logo: {
-    color: "#FFFFFF",
-  },
-  navLinks: {
-    display: "flex",
-    alignItems: "center",
-    padding: "20px",
-    width: "33%",
-    justifyContent: "space-between",
+    textDecoration: 'none',
+    color: 'white',
+  }
 
-  },
 }));
 
 export default function NavBar({}: Props): ReactElement {
@@ -59,6 +36,7 @@ export default function NavBar({}: Props): ReactElement {
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -75,18 +53,39 @@ export default function NavBar({}: Props): ReactElement {
     setAnchorElUser(null);
   };
 
-  async function handleLogout() {
+  async function handleSignOut() {
     try {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('user')
       navigate("/login");
     } catch (error) {
       console.log("logout failed");
     }
   }
 
-  return (
+  useEffect(() => {
+    try {
+      axios.get('/api/users', {
+        headers: {
+          "x-access-token": localStorage.getItem("token") || ''
+        },
+        })
+      .then((response) => {
+        if (response.data === 'User authenticated') {
+          console.log(response.data)
+          setIsLoggedIn(true)
+        }
+      })
+      console.log(isLoggedIn)
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }, [isLoggedIn])
   
 
-<AppBar style={{backgroundColor: "#A4D7C2", marginBottom: '50px'}} >
+return (
+<AppBar style={{backgroundColor: "#A4D7C2"}} >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -95,8 +94,8 @@ export default function NavBar({}: Props): ReactElement {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            <Link to='/' style={{textDecoration: 'none'}}>
-            KICKSTARTER APP
+            <Link to='/'  className={classes.link}>
+            AchievIt
             </Link>
             
           </Typography>
@@ -143,7 +142,7 @@ export default function NavBar({}: Props): ReactElement {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            LOGO
+            KICKSTARTER APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -152,7 +151,7 @@ export default function NavBar({}: Props): ReactElement {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <Link to={page.link} style={{  textDecoration: 'none'}}>
+                <Link to={page.link} className={classes.link}>
                 {page.title}
               </Link>
               </Button>
@@ -160,16 +159,16 @@ export default function NavBar({}: Props): ReactElement {
           </Box>
 
           <Box>
-            {/* verfiedUser ? 
-        (<Link to="/campaigns" style={{  textDecoration: 'none'}}>
-          <Typography className={classes.link}>Fund a Campaign</Typography>
+            {isLoggedIn ? 
+        (<Link to="/" style={{  textDecoration: 'none'}}>
+          <Typography className={classes.link} onClick={handleSignOut}>Sign Out</Typography>
         </Link>) 
         : 
         (
-          <Link to="/campaigns" style={{  textDecoration: 'none'}}>
-          <Typography className={classes.link}>Fund a Campaign</Typography>
+          <Link to="/login" style={{  textDecoration: 'none'}}>
+          <Typography className={classes.link}>Log In</Typography>
         </Link>
-        ) */}
+        )}
           </Box>
          
         </Toolbar>
@@ -180,15 +179,3 @@ export default function NavBar({}: Props): ReactElement {
     
   );
 }
-
-
-
-
-
-        // <Link to="/" style={{  textDecoration: 'none'}}>
-        //   <Typography className={classes.link}>Home</Typography>
-        // </Link>
-        
-        // <Link to="/campaigns" style={{  textDecoration: 'none'}}>
-        //   <Typography className={classes.link}>Fund a Campaign</Typography>
-        // </Link>
